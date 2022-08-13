@@ -23,7 +23,7 @@ h1 {
     color: white;
 }
 
-.content {
+#game-box {
     background-color: rgb(0, 0, 0);
     min-height: 600px;
     max-height: 600px;

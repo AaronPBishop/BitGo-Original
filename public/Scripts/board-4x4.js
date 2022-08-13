@@ -1,8 +1,8 @@
-class Board4x4 {
+export default class Board4x4 {
     constructor() {
         this.numRows = 4;
         this.numCols = 4;
-        this.board = this.populateBoard();
+        this.fillBoard = this.generateBoard();
     };
 
     randomTotalGenerator() {
@@ -99,7 +99,7 @@ class Board4x4 {
         return coordinates;
     };
 
-    populateBoard() {
+    generateBoard() {
         const board = this.generateGrid();
         const coordinates = this.getCoordinates();
 
@@ -112,16 +112,10 @@ class Board4x4 {
         return board;
     };
 
-    returnTile() {
-        return this.board[row][col];
+    tileValue(row, col) {
+        return this.fillBoard[row][col];
     };
 };
 
-const newBoard = new Board4x4;
-console.log(newBoard.populateBoard());
-
-try {
-    module.exports = Board4x4;
-} catch {
-    module.exports = null;
-};
+// const newBoard = new Board4x4;
+// console.log(newBoard.generateBoard());
