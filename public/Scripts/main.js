@@ -1,7 +1,7 @@
-import Board from "./board-4x4.js";
+import Board4x4 from "./board-4x4.js";
 
 window.addEventListener('DOMContentLoaded', () => {
-    let board = new Board();
+    let board = new Board4x4();
 
     let currentMinute = document.getElementById("current-minute");
     let currentSecond = document.getElementById("current-second");
