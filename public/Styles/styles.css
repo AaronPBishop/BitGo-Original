@@ -7,11 +7,6 @@ body {
     box-sizing: border-box;
 }
 
-
-p {
-    color: white;
-}
-
 h1 {
     position: relative;
     margin-left: 700px;
@@ -39,14 +34,14 @@ h1 {
 
 .buttons {
     position: relative;
-    bottom: 20px;
+    bottom: 15px;
 
     background-color: rgb(41, 38, 38);
 
-    min-height: 120px;
-    max-height: 120px;
-    min-width: 120px;
-    max-width: 120px;
+    min-height: 115px;
+    max-height: 115px;
+    min-width: 115px;
+    max-width: 115px;
     border-radius: 10px;
     margin: 2px;
 
@@ -58,7 +53,8 @@ h1 {
 }
 
 .current-time {
+    color: white;
     display: inline-flex;
     position: relative;
-    top: 540px;
+    top: 530px;
 }
