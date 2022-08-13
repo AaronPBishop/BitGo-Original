@@ -3,7 +3,8 @@ const board = new Board4x4();
 const tiles = board.fillBoard;
 const gameBox = document.getElementById('game-box');
 
-const singleClick = (tile) => {
+const alterTile = e => {
+    let tile = e.target;
     if (tile.style.backgroundColor === "rgb(41, 38, 38)" || tile.style.backgroundColor === "") {
       tile.style.backgroundColor = "red";
     } else if (tile.style.backgroundColor === "red") {
@@ -25,10 +26,10 @@ const populateBoard = (grid) => {
             currTile.setAttribute('data-col', col);
 
             const currTileVal = board.tileValue(currTile.dataset.row, currTile.dataset.col);
+
             if (currTileVal === 'blue') currTile.style.backgroundColor = 'blue';
             if (currTileVal === 'red') currTile.style.backgroundColor = 'red';
-
-            // currTile.addEventListener('click', singleClick(currTile))
+            if (currTileVal === null) currTile.addEventListener('click', alterTile);
 
             gameBox.appendChild(currTile);
         };
