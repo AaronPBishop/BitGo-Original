@@ -16,15 +16,13 @@ class Board4x4 {
         let randomColor = ["blue", "red"];
 
         let randomIndex = Math.floor(Math.random() * randomColor.length);
+
         return randomColor[randomIndex];
     };
 
     randomTileGenerator() {
-        const rows = [1, 2, 3, 4];
-        const cols = [1, 2, 3, 4];
-
-        const randRow = rows[Math.floor(Math.random() * rows.length)];
-        const randCol = cols[Math.floor(Math.random() * cols.length)];
+        const randRow = Math.floor(Math.random() * 3);
+        const randCol = Math.floor(Math.random() * 3);
 
         const tile = [`r${randRow}`, `c${randCol}`];
 
@@ -43,48 +41,75 @@ class Board4x4 {
 
     generateTiles() {
         const randomTotal = this.randomTotalGenerator();
+        const finalTiles = [];
     
-        const myTiles = {
+        const tileTracker = {
+            r0: 0,
             r1: 0,
             r2: 0,
             r3: 0,
-            r4: 0,
+            c0: 0,
             c1: 0,
             c2: 0,
             c3: 0,
-            c4: 0,
             total: randomTotal
         };
     
-        while (myTiles.total > 0) {
-            const tile = this.checkTile(myTiles);
+        while (tileTracker.total > 0) {
+            const tile = this.checkTile(tileTracker);
+            finalTiles.push(tile);
     
-            myTiles[tile[0]]++;
-            myTiles[tile[1]]++;
+            tileTracker[tile[0]]++;
+            tileTracker[tile[1]]++;
     
-            myTiles.total--;
+            tileTracker.total--;
         };
     
-        return myTiles;
+        return finalTiles;
     };
 
-    populateBoard() {
+    generateGrid() {
         const grid = [];
-        const tiles = this.generateTiles();
-        const rows = Object.values(tiles).splice(0, 4);
-        const cols = Object.values(tiles).splice(4, 4);
 
         for (let i = 0; i < this.numRows; i++) {
             grid.push([]);
-            for (let j = 0; j < this.numCols; j++) {
-                let currTile = [rows[i], cols[i]];
 
-                if (currTile[i] > 0 )
-                grid[i].push(currTile);
+            for (let j = 0; j < this.numCols; j++) {
+                grid[i].push(null);
             };
         };
 
         return grid;
+    };
+
+    getCoordinates() {
+        const tiles = this.generateTiles();
+
+        const coordinates = [];
+        while (tiles.length > 0) {
+            let currTile = tiles.shift();
+            let [currRow, currCol] = currTile;
+
+            let rowNum = currRow.split('').splice(1, 1).join('');
+            let colNum = currCol.split('').splice(1, 1).join('');
+            
+            coordinates.push([Number(rowNum), Number(colNum)]);
+        };
+        
+        return coordinates;
+    };
+
+    populateBoard() {
+        const board = this.generateGrid();
+        const coordinates = this.getCoordinates();
+
+        coordinates.forEach(coordinate => {
+            let [currRow, currCol] = coordinate;
+
+            board[currRow][currCol] = this.randomColorGenerator();
+        });
+
+        return board;
     };
 
     returnTile() {
@@ -93,7 +118,7 @@ class Board4x4 {
 };
 
 const newBoard = new Board4x4;
-console.log(newBoard.generateTiles());
+console.log(newBoard.populateBoard());
 
 try {
     module.exports = Board4x4;
