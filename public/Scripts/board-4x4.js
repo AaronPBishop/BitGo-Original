@@ -30,16 +30,18 @@ export default class Board4x4 {
     };
 
     checkTile(obj, visited = new Set()) {
-        let tile = this.randomTileGenerator();
+        const tile = this.randomTileGenerator();
+        const row = tile[0];
+        const col = tile[1];
     
-        if (obj[tile[0]] < 2 && obj[tile[1]] < 2 && !visited.has(obj[tile])) return tile;
+        if (obj[row] < 2 && obj[col] < 2 && !visited.has(obj[tile])) return tile;
     
         visited.add(tile);
     
         return this.checkTile(obj, visited);
     };
 
-    generateTiles() {
+    generateValidTiles() {
         const randomTotal = this.randomTotalGenerator();
         const finalTiles = [];
     
@@ -56,11 +58,14 @@ export default class Board4x4 {
         };
     
         while (tileTracker.total > 0) {
-            const tile = this.checkTile(tileTracker);
-            finalTiles.push(tile);
+            const currTile = this.checkTile(tileTracker);
+            const row = currTile[0];
+            const col = currTile[1];
+
+            finalTiles.push(currTile);
     
-            tileTracker[tile[0]]++;
-            tileTracker[tile[1]]++;
+            tileTracker[row]++;
+            tileTracker[col]++;
     
             tileTracker.total--;
         };
@@ -83,7 +88,7 @@ export default class Board4x4 {
     };
 
     getCoordinates() {
-        const tiles = this.generateTiles();
+        const tiles = this.generateValidTiles();
 
         const coordinates = [];
         while (tiles.length > 0) {

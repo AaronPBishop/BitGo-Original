@@ -3,8 +3,20 @@ const board = new Board4x4();
 const tiles = board.fillBoard;
 const gameBox = document.getElementById('game-box');
 
+const currentMinute = document.getElementById("current-minute");
+const currentSecond = document.getElementById("current-second");
+let seconds = 0;
+
+const timer = val => val > 9 ? val : "0" + val;
+
+setInterval(() => {
+    currentMinute.innerHTML = timer(parseInt(seconds / 60, 10));
+    currentSecond.innerHTML = timer(++seconds % 60);
+}, 1000);
+
 const alterTile = e => {
     let tile = e.target;
+
     if (tile.style.backgroundColor === "rgb(41, 38, 38)" || tile.style.backgroundColor === "") {
       tile.style.backgroundColor = "red";
     } else if (tile.style.backgroundColor === "red") {
@@ -38,4 +50,5 @@ const populateBoard = (grid) => {
 
 window.addEventListener('DOMContentLoaded', () => {
     populateBoard(tiles);
+    timer();
 });
