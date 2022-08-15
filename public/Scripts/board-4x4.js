@@ -14,11 +14,7 @@ export default class Board4x4 {
     };
 
     randomColorGenerator() {
-        let randomColor = ["blue", "red"];
-
-        let randomIndex = Math.floor(Math.random() * randomColor.length);
-
-        return randomColor[randomIndex];
+        return Math.floor(Math.random() * 2);
     };
 
     randomTileGenerator() {
@@ -109,7 +105,7 @@ export default class Board4x4 {
         return coordinates;
     };
 
-    // checkBoard() {
+     // checkBoard() {
         // If we find a color value, check if the color has neighbors 
         // If no neighbors, continue
         // Else, check to see if row or col are === neighbor row or col
@@ -117,10 +113,6 @@ export default class Board4x4 {
         // If col === col of neighbor, check row +- 1 for neighbor/curr
         // If we find that the values of the new neighbor pair are = the curr pair, rerun generateBoard()
     // };
-
-    // isWinnable() {
-        // Check if game is winnable
-    // }
 
     generateBoard() {
         const board = this.generateGrid();
@@ -144,3 +136,4 @@ export default class Board4x4 {
 
     // }
 };
+

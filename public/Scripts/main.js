@@ -17,10 +17,10 @@ setInterval(() => {
 const alterTile = e => {
     if (e.target.style.backgroundColor === "rgb(41, 38, 38)" || e.target.style.backgroundColor === "") {
       e.target.style.backgroundColor = "red";
-      board.grid[e.target.dataset.row][e.target.dataset.col] = 'red';
+      board.grid[e.target.dataset.row][e.target.dataset.col] = 0;
     } else if (e.target.style.backgroundColor === "red") {
       e.target.style.backgroundColor = "blue";
-      board.grid[e.target.dataset.row][e.target.dataset.col] = 'blue';
+      board.grid[e.target.dataset.row][e.target.dataset.col] = 1;
     } else {
       e.target.style.backgroundColor = "rgb(41, 38, 38)";
       board.grid[e.target.dataset.row][e.target.dataset.col] = null;
@@ -40,9 +40,10 @@ const populateBoard = (grid) => {
 
             const currTileVal = board.tileValue(currTile.dataset.row, currTile.dataset.col);
 
-            if (currTileVal === 'blue') currTile.style.backgroundColor = 'blue';
-            if (currTileVal === 'red') currTile.style.backgroundColor = 'red';
+            if (currTileVal === 0) currTile.style.backgroundColor = 'red';
+            if (currTileVal === 1) currTile.style.backgroundColor = 'blue';
             if (currTileVal === null) currTile.addEventListener('click', alterTile);
+            
             gameBox.appendChild(currTile);
         };
     };
