@@ -29,6 +29,7 @@ const alterTile = e => {
 };
 
 const populateBoard = (grid) => {
+  if (grid && grid.length > 0) {
     for (let row = 0; row < grid.length; row++) {
         const currDiv = document.createElement('div');
         gameBox.appendChild(currDiv);
@@ -51,6 +52,7 @@ const populateBoard = (grid) => {
             gameBox.appendChild(currTile);
         };
     };
+  };
 };
 
 window.addEventListener('DOMContentLoaded', () => {

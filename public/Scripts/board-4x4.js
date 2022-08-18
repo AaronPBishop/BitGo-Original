@@ -142,8 +142,10 @@ export default class Board4x4 {
                         const currBlue = blue[x];
                         const nextBlue = blue[x + 1];
 
-                        if (currBlue[0] === nextBlue[0]) check += 2;
-                    }
+                        if (nextBlue) {
+                            if (currBlue[0] === nextBlue[0]) check += 2;
+                        };
+                    };
                 };
 
                 if (initialCoord[1] + 2 === currCoord[1]) {
@@ -152,8 +154,10 @@ export default class Board4x4 {
                         const currBlue = blue[x];
                         const nextBlue = blue[x + 1];
 
-                        if (currBlue[1] === nextBlue[1]) check += 2;
-                    }
+                        if (nextBlue) {
+                            if (currBlue[1] === nextBlue[1]) check += 2;
+                        };
+                    };
                 };
             };
         };
@@ -170,8 +174,10 @@ export default class Board4x4 {
                         const currRed = red[x];
                         const nextRed = red[x + 1];
 
-                        if (currRed[0] === nextRed[0]) check += 2;
-                    }
+                        if (nextRed) {
+                            if (currRed[0] === nextRed[0]) check += 2;
+                        };
+                    };
                 };
 
                 if (initialCoord[1] + 2 === currCoord[1]) {
@@ -180,8 +186,10 @@ export default class Board4x4 {
                         const currRed = red[x];
                         const nextRed = red[x + 1];
 
-                        if (currRed[1] === nextRed[1]) check += 2;
-                    }
+                        if (nextRed) {
+                            if (currRed[1] === nextRed[1]) check += 2;
+                        };
+                    };
                 };
             };
         };
@@ -225,7 +233,7 @@ export default class Board4x4 {
         return this.fillBoard[row][col];
     };
 
-    checkWin(board) {
+    // checkWin(board) {
         
-    };
+    // };
 };
