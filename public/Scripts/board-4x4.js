@@ -105,35 +105,127 @@ export default class Board4x4 {
         return coordinates;
     };
 
-     // checkBoard() {
-        // If we find a color value, check if the color has neighbors 
-        // If no neighbors, continue
-        // Else, check to see if row or col are === neighbor row or col
-        // If row === row of neighbor check col +- 1 for neighbor/curr
-        // If col === col of neighbor, check row +- 1 for neighbor/curr
-        // If we find that the values of the new neighbor pair are = the curr pair, rerun generateBoard()
-    // };
+     checkBoard(clrCrds) {
+        const red = Object.values(clrCrds[0]);
+        const blue = Object.values(clrCrds[1]);
+        let check = 0;
+
+        // Checking for duplicate red pairs in col/row
+        for (let i = 0; i < red.length; i++) {
+            const currCoord = red[i];
+            const nextCoord = red[i + 1];
+            if (nextCoord) {
+                if (currCoord[1] === nextCoord[1]) check++;
+                if (currCoord[0] === nextCoord[0]) check++;
+            };
+        };
+
+        // Checking for duplicate blue pairs in col/row
+        for (let i = 0; i < blue.length; i++) {
+            const currCoord = blue[i];
+            const nextCoord = blue[i + 1];
+            if (nextCoord) {
+                if (currCoord[1] === nextCoord[1]) check++;
+                if (currCoord[0] === nextCoord[0]) check++;
+            };
+        };
+
+        for (let i = 0; i < red.length; i++) {
+            let initialCoord = red[i];
+
+            for (let j = 0; j < red.length; j++) {
+                let currCoord = red[j];
+
+                if (initialCoord[0] + 2 === currCoord[0]) {
+                    // run blue loop and check for blue row pair and check += 2
+                    for (let x = 0; x < blue.length; x++) {
+                        const currBlue = blue[x];
+                        const nextBlue = blue[x + 1];
+
+                        if (currBlue[0] === nextBlue[0]) check += 2;
+                    }
+                };
+
+                if (initialCoord[1] + 2 === currCoord[1]) {
+                    // run blue loop and check for blue column pair and check += 2
+                    for (let x = 0; x < blue.length; x++) {
+                        const currBlue = blue[x];
+                        const nextBlue = blue[x + 1];
+
+                        if (currBlue[1] === nextBlue[1]) check += 2;
+                    }
+                };
+            };
+        };
+
+        for (let i = 0; i < blue.length; i++) {
+            let initialCoord = blue[i];
+
+            for (let j = 0; j < blue.length; j++) {
+                let currCoord = blue[j];
+
+                if (initialCoord[0] + 2 === currCoord[0]) {
+                    // run red loop and check for red row pair and check += 2
+                    for (let x = 0; x < red.length; x++) {
+                        const currRed = red[x];
+                        const nextRed = red[x + 1];
+
+                        if (currRed[0] === nextRed[0]) check += 2;
+                    }
+                };
+
+                if (initialCoord[1] + 2 === currCoord[1]) {
+                    // run red loop and check for red column pair and check += 2
+                    for (let x = 0; x < red.length; x++) {
+                        const currRed = red[x];
+                        const nextRed = red[x + 1];
+
+                        if (currRed[1] === nextRed[1]) check += 2;
+                    }
+                };
+            };
+        };
+
+        if (check >= 2) return false;
+
+        return true;
+    };
 
     generateBoard() {
         const board = this.generateGrid();
+        const colors = [];
         const coordinates = this.getCoordinates();
 
-        coordinates.forEach(coordinate => {
-            let [currRow, currCol] = coordinate;
+        const colorCoords = {
+            0: [],
+            1: []
+        };
 
-            board[currRow][currCol] = this.randomColorGenerator();
+        coordinates.forEach(coordinate => {
+            const color = this.randomColorGenerator();
+
+            colors.push(color);
+            colorCoords[color].push(coordinate);
         });
 
-        this.grid = board;
-        return board;
+        if (this.checkBoard(colorCoords)) {
+            coordinates.forEach(coordinate => {
+                let [currRow, currCol] = coordinate;
+                board[currRow][currCol] = colors.shift();
+            });
+
+            this.grid = board;
+            return board;
+        };
+
+        this.generateBoard();
     };
 
     tileValue(row, col) {
         return this.fillBoard[row][col];
     };
 
-    // checkWin() {
-
-    // }
+    checkWin(board) {
+        
+    };
 };
-

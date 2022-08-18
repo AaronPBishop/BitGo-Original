@@ -1,6 +1,7 @@
 import Board4x4 from "./board-4x4.js";
-const board = new Board4x4();
-const tiles = board.fillBoard;
+const randomBoard = new Board4x4();
+const presetTiles = randomBoard.fillBoard;
+const currentGrid = randomBoard.grid;
 const gameBox = document.getElementById('game-box');
 
 const currentMinute = document.getElementById("current-minute");
@@ -17,13 +18,13 @@ setInterval(() => {
 const alterTile = e => {
     if (e.target.style.backgroundColor === "rgb(41, 38, 38)" || e.target.style.backgroundColor === "") {
       e.target.style.backgroundColor = "red";
-      board.grid[e.target.dataset.row][e.target.dataset.col] = 0;
+      currentGrid[e.target.dataset.row][e.target.dataset.col] = 0;
     } else if (e.target.style.backgroundColor === "red") {
       e.target.style.backgroundColor = "blue";
-      board.grid[e.target.dataset.row][e.target.dataset.col] = 1;
+      currentGrid[e.target.dataset.row][e.target.dataset.col] = 1;
     } else {
       e.target.style.backgroundColor = "rgb(41, 38, 38)";
-      board.grid[e.target.dataset.row][e.target.dataset.col] = null;
+      currentGrid[e.target.dataset.row][e.target.dataset.col] = null;
     };
 };
 
@@ -38,11 +39,14 @@ const populateBoard = (grid) => {
             currTile.setAttribute('data-row', row);
             currTile.setAttribute('data-col', col);
 
-            const currTileVal = board.tileValue(currTile.dataset.row, currTile.dataset.col);
+            const currTileVal = randomBoard.tileValue(currTile.dataset.row, currTile.dataset.col);
 
             if (currTileVal === 0) currTile.style.backgroundColor = 'red';
             if (currTileVal === 1) currTile.style.backgroundColor = 'blue';
-            if (currTileVal === null) currTile.addEventListener('click', alterTile);
+            if (currTileVal === null) currTile.addEventListener('click', e => {
+              alterTile(e);
+              randomBoard.checkWin(currentGrid);
+            });
             
             gameBox.appendChild(currTile);
         };
@@ -50,6 +54,6 @@ const populateBoard = (grid) => {
 };
 
 window.addEventListener('DOMContentLoaded', () => {
-    populateBoard(tiles);
+    populateBoard(presetTiles);
     timer();
 });
