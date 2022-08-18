@@ -105,12 +105,13 @@ export default class Board4x4 {
         return coordinates;
     };
 
-     checkBoard(clrCrds) {
-        const red = Object.values(clrCrds[0]);
-        const blue = Object.values(clrCrds[1]);
+    checkBoard(clrCrds) {
+        let red = Object.values(clrCrds[0]);
+        let blue = Object.values(clrCrds[1]);
+
         let check = 0;
 
-        // Checking for duplicate red pairs in col/row
+        // Check for red pairs in col/row
         for (let i = 0; i < red.length; i++) {
             const currCoord = red[i];
             const nextCoord = red[i + 1];
@@ -120,7 +121,7 @@ export default class Board4x4 {
             };
         };
 
-        // Checking for duplicate blue pairs in col/row
+        // Check for blue pairs in col/row
         for (let i = 0; i < blue.length; i++) {
             const currCoord = blue[i];
             const nextCoord = blue[i + 1];
@@ -130,69 +131,137 @@ export default class Board4x4 {
             };
         };
 
+        // Check for red tiles seperated by one row/col with a blue pair in-between
         for (let i = 0; i < red.length; i++) {
-            let initialCoord = red[i];
+            const initialCoord = red[i];
 
             for (let j = 0; j < red.length; j++) {
-                let currCoord = red[j];
+                const currCoord = red[j];
 
                 if (initialCoord[0] + 2 === currCoord[0]) {
-                    // run blue loop and check for blue row pair and check += 2
+                    // run blue loop and check for blue row pair
                     for (let x = 0; x < blue.length; x++) {
                         const currBlue = blue[x];
                         const nextBlue = blue[x + 1];
 
                         if (nextBlue) {
-                            if (currBlue[0] === nextBlue[0]) check += 2;
+                            if (currBlue[0] === nextBlue[0] && currBlue[0] === initialCoord[0] + 1 || currBlue[0] === initialCoord[0] + 3) check += 2;
                         };
                     };
                 };
 
                 if (initialCoord[1] + 2 === currCoord[1]) {
-                    // run blue loop and check for blue column pair and check += 2
+                    // run blue loop and check for blue column pair
                     for (let x = 0; x < blue.length; x++) {
                         const currBlue = blue[x];
                         const nextBlue = blue[x + 1];
 
                         if (nextBlue) {
-                            if (currBlue[1] === nextBlue[1]) check += 2;
+                            if (currBlue[1] === nextBlue[1] && currBlue[1] === initialCoord[1] + 1 || currBlue[1] === initialCoord[1] + 3) check += 2;
                         };
                     };
                 };
             };
         };
 
+        // Check for blue tiles seperated by one row/col with a red pair in-between
         for (let i = 0; i < blue.length; i++) {
-            let initialCoord = blue[i];
+            const initialCoord = blue[i];
 
             for (let j = 0; j < blue.length; j++) {
-                let currCoord = blue[j];
+                const currCoord = blue[j];
 
                 if (initialCoord[0] + 2 === currCoord[0]) {
-                    // run red loop and check for red row pair and check += 2
+                    // run red loop and check for red row pair
                     for (let x = 0; x < red.length; x++) {
                         const currRed = red[x];
                         const nextRed = red[x + 1];
 
                         if (nextRed) {
-                            if (currRed[0] === nextRed[0]) check += 2;
+                            if (currRed[0] === nextRed[0] && currRed[0] === initialCoord[0] + 1 || currRed[0] === initialCoord[0] + 3) check += 2;
                         };
                     };
                 };
 
                 if (initialCoord[1] + 2 === currCoord[1]) {
-                    // run red loop and check for red column pair and check += 2
+                    // run red loop and check for red column pair
                     for (let x = 0; x < red.length; x++) {
                         const currRed = red[x];
                         const nextRed = red[x + 1];
 
                         if (nextRed) {
-                            if (currRed[1] === nextRed[1]) check += 2;
+                            if (currRed[1] === nextRed[1] && currRed[1] === initialCoord[1] + 1 || currRed[1] === initialCoord[1] + 3) check += 2;
                         };
                     };
                 };
             };
         };
+
+        // Check for red 'Y' patterns and a rogue blue tile
+        if (red.length === 4 && blue.length === 1) {
+            for (let i = 0; i < red.length; i++) {
+                let initialCoord = red[i];
+    
+                for (let j = 0; j < red.length; j++) {
+                    let currCoord = red[j];
+    
+                    if (initialCoord[0] + 2 === currCoord[0]) {
+                        for (let x = 0; x < red.length; x++) {
+                            const currRed = red[x];
+                            const nextRed = red[x + 1];
+    
+                            if (nextRed) {
+                                if (currRed[0] === nextRed[0] && currRed[0] === initialCoord[0] + 1) check += 2;
+                            };
+                        };
+                    };
+    
+                    if (initialCoord[1] + 2 === currCoord[1]) {
+                        for (let x = 0; x < red.length; x++) {
+                            const currRed = red[x];
+                            const nextRed = red[x + 1];
+    
+                            if (nextRed) {
+                                if (currRed[1] === nextRed[1] && currRed[1] === initialCoord[1] + 1) check += 2;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+
+        // Check for blue 'Y' patterns and a rogue red tile
+        if (blue.length === 4 && red.length === 1) {
+            for (let i = 0; i < blue.length; i++) {
+                let initialCoord = blue[i];
+    
+                for (let j = 0; j < blue.length; j++) {
+                    let currCoord = blue[j];
+    
+                    if (initialCoord[0] + 2 === currCoord[0]) {
+                        for (let x = 0; x < blue.length; x++) {
+                            const currblue = blue[x];
+                            const nextblue = blue[x + 1];
+    
+                            if (nextblue) {
+                                if (currblue[0] === nextblue[0] && currblue[0] === initialCoord[0] + 1) check += 2;
+                            };
+                        };
+                    };
+    
+                    if (initialCoord[1] + 2 === currCoord[1]) {
+                        for (let x = 0; x < blue.length; x++) {
+                            const currblue = blue[x];
+                            const nextblue = blue[x + 1];
+    
+                            if (nextblue) {
+                                if (currblue[1] === nextblue[1] && currblue[1] === initialCoord[1] + 1) check += 2;
+                            };
+                        };
+                    };
+                };
+            };
+        }
 
         if (check >= 2) return false;
 
