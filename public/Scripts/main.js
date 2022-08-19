@@ -55,6 +55,7 @@ const populateBoard = async (grid) => {
   };
 };
 
+
 window.addEventListener('DOMContentLoaded', () => {
     populateBoard(presetTiles)
     timer();

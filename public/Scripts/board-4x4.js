@@ -109,6 +109,15 @@ export default class Board4x4 {
         let red = Object.values(clrCrds[0]);
         let blue = Object.values(clrCrds[1]);
 
+        red.sort((a, b) => a[0] - b[0]);
+        red.sort((a, b) => a[1] + b[1]);
+        blue.sort((a, b) => a[0] - b[0]);
+        blue.sort((a, b) => a[1] + b[1]);
+
+        console.log('Red:', red);
+        console.log('Blue:', blue);
+
+
         let check = 0;
 
         // Check for red pairs in col/row
@@ -205,7 +214,7 @@ export default class Board4x4 {
                 for (let j = 0; j < red.length; j++) {
                     let currCoord = red[j];
     
-                    if (initialCoord[0] + 2 === currCoord[0]) {
+                    if (initialCoord[0] + 2 === currCoord[0] || initialCoord[0] + 3 === currCoord[0]) {
                         for (let x = 0; x < red.length; x++) {
                             const currRed = red[x];
                             const nextRed = red[x + 1];
@@ -216,7 +225,7 @@ export default class Board4x4 {
                         };
                     };
     
-                    if (initialCoord[1] + 2 === currCoord[1]) {
+                    if (initialCoord[1] + 2 === currCoord[1] || initialCoord[1] + 3 === currCoord[1]) {
                         for (let x = 0; x < red.length; x++) {
                             const currRed = red[x];
                             const nextRed = red[x + 1];
@@ -238,7 +247,7 @@ export default class Board4x4 {
                 for (let j = 0; j < blue.length; j++) {
                     let currCoord = blue[j];
     
-                    if (initialCoord[0] + 2 === currCoord[0]) {
+                    if (initialCoord[0] + 2 === currCoord[0] || initialCoord[0] + 3 === currCoord[0]) {
                         for (let x = 0; x < blue.length; x++) {
                             const currblue = blue[x];
                             const nextblue = blue[x + 1];
@@ -249,7 +258,7 @@ export default class Board4x4 {
                         };
                     };
     
-                    if (initialCoord[1] + 2 === currCoord[1]) {
+                    if (initialCoord[1] + 2 === currCoord[1] || initialCoord[1] + 3 === currCoord[0]) {
                         for (let x = 0; x < blue.length; x++) {
                             const currblue = blue[x];
                             const nextblue = blue[x + 1];
@@ -261,7 +270,7 @@ export default class Board4x4 {
                     };
                 };
             };
-        }
+        };
 
         if (check >= 2) return false;
 
@@ -295,14 +304,58 @@ export default class Board4x4 {
             return board;
         };
 
-        this.generateBoard();
+        return this.generateBoard();
     };
 
     tileValue(row, col) {
         return this.fillBoard[row][col];
     };
 
-    // checkWin(board) {
-        
-    // };
+    isBoardFull(board) {
+        for (let row = 0; row < board.length; row++) {
+            for (let col = 0; col < board[row].length; col++) {
+                let currTile = board[row][col];
+
+                if (currTile === null) return false;
+            };
+        };
+
+        return true;
+    };
+
+    checkRows(board) {
+        const rows = {
+            r0: [],
+            r1: [],
+            r2: [],
+            r3: []
+        };
+
+        for (let row = 0; row < board.length; row++) {
+            let currRow = `r${row}`;
+            for (let col = 0; col < board[row].length; col++) {
+
+                rows[currRow].push(this.grid[row][col]);
+            };
+        };
+
+        const rowValues = Object.values(rows);
+        for (let row = 0; row < rowValues.length; row++) {
+            let currRow = rowValues[row].toString();
+            for (let next = 0; next < rowValues.length; next++) {
+                let nextRow = rowValues[next].toString();
+
+                if (currRow === nextRow) return false;
+            };
+        };
+
+        return true;
+    };
+
+    checkWin(board) {
+        if (this.isBoardFull(board)) {
+            console.log('Board is full');
+            console.log(this.checkRows(board))
+        };
+    };
 };
