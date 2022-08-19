@@ -403,12 +403,35 @@ export default class Board4x4 {
     };
 
     checkWin(board) {
+        const incomplete = document.getElementById('incomplete');
         if (this.isBoardFull(board)) {
             if (this.checkRows(board)) {
                 if (this.checkCols(board)) {
-                    if (this.checkTotal(board)) return true;
+                    if (this.checkTotal(board)) {
+                        incomplete.innerText = '';
+                        document.getElementById('current-minute').style.display = 'none';
+                        document.getElementById('current-second').style.display = 'none';
+                        document.getElementById('delimiter').style.display = 'none';
+
+                        const buttons = document.querySelectorAll('.buttons');
+                        buttons.forEach(button => {
+                            button.style.opacity = '0.8';
+                            button.disabled = true;
+                        });
+
+                        const gameWin = document.getElementById('game-win');
+                        gameWin.style.display = 'block';
+                    } else {
+                        incomplete.innerText = 'Rows and columns must have an even number of tiles'
+                    };
+                } else {
+                    incomplete.innerText = 'Each column must be unique'
                 };
+            } else {
+                incomplete.innerText = 'Each row must be unique'
             };
+        } else {
+            incomplete.innerText = '';
         };
     };
 };

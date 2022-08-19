@@ -1,4 +1,5 @@
 import Board4x4 from "./board-4x4.js";
+
 const randomBoard = new Board4x4();
 const presetTiles = randomBoard.fillBoard;
 const currentGrid = randomBoard.grid;
@@ -11,8 +12,8 @@ let seconds = 0;
 const timer = val => val > 9 ? val : "0" + val;
 
 setInterval(() => {
-    currentMinute.innerHTML = timer(parseInt(seconds / 60, 10));
-    currentSecond.innerHTML = timer(++seconds % 60);
+    currentMinute.innerText = timer(parseInt(seconds / 60, 10));
+    currentSecond.innerText = timer(++seconds % 60);
 }, 1000);
 
 const alterTile = e => {
@@ -32,6 +33,7 @@ const populateBoard = async (grid) => {
   if (grid) {
     for (let row = 0; row < grid.length; row++) {
         const currDiv = document.createElement('div');
+        currDiv.style.display = 'flex';
         gameBox.appendChild(currDiv);
 
         for (let col = 0; col < grid.length; col++) {
@@ -46,7 +48,7 @@ const populateBoard = async (grid) => {
             if (currTileVal === 1) currTile.style.backgroundColor = 'blue';
             if (currTileVal === null) currTile.addEventListener('click', e => {
               alterTile(e);
-              randomBoard.checkWin(currentGrid);
+              randomBoard.checkWin(currentGrid)
             });
             
             gameBox.appendChild(currTile);
@@ -58,5 +60,10 @@ const populateBoard = async (grid) => {
 
 window.addEventListener('DOMContentLoaded', () => {
     populateBoard(presetTiles)
-    timer();
+
+    const gameWin = document.getElementById('game-win');
+
+    gameWin.addEventListener("click", () => {
+      window.location.reload(true)
+    });
 });
