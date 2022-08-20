@@ -33,7 +33,6 @@ const populateBoard = async (grid) => {
   if (grid) {
     for (let row = 0; row < grid.length; row++) {
         const currDiv = document.createElement('div');
-        currDiv.style.display = 'flex';
         gameBox.appendChild(currDiv);
 
         for (let col = 0; col < grid.length; col++) {

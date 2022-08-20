@@ -378,7 +378,7 @@ export default class Board4x4 {
         return true;
     };
 
-    checkTotal(board) {
+    checkTotalRow(board) {
         const values = {
             r0: 0,
             r1: 0,
@@ -402,33 +402,63 @@ export default class Board4x4 {
         return false;
     };
 
+    checkTotalCol(board) {
+        const values = {
+            c0: 0,
+            c1: 0,
+            c2: 0,
+            c3: 0
+        };
+
+        for (let row = 0; row < board.length; row++) {
+            for (let col = 0; col < board[row].length; col++) {
+                const currCol = `c${col}`
+                let currColVal = board[row][col];
+
+                values[currCol] += currColVal;
+            };
+        };
+
+        let check = 0;
+        Object.values(values).forEach(val => {if (Number(val) === 2) check++});
+
+        if (check === 4) return true;
+        return false;
+    };
+
     checkWin(board) {
         const incomplete = document.getElementById('incomplete');
         if (this.isBoardFull(board)) {
             if (this.checkRows(board)) {
                 if (this.checkCols(board)) {
-                    if (this.checkTotal(board)) {
-                        incomplete.innerText = '';
-                        document.getElementById('current-minute').style.display = 'none';
-                        document.getElementById('current-second').style.display = 'none';
-                        document.getElementById('delimiter').style.display = 'none';
+                    if (this.checkTotalRow(board)) {
+                        if (this.checkTotalCol(board)) {
+                            incomplete.innerText = '';
+                            document.getElementById('current-minute').style.display = 'none';
+                            document.getElementById('current-second').style.display = 'none';
+                            document.getElementById('delimiter').style.display = 'none';
 
-                        const buttons = document.querySelectorAll('.buttons');
-                        buttons.forEach(button => {
-                            button.style.opacity = '0.8';
-                            button.disabled = true;
-                        });
+                            const buttons = document.querySelectorAll('.buttons');
+                            buttons.forEach(button => {
+                                button.style.opacity = '0.8';
+                                button.style.bottom = '0px';
+                                button.style.top = '10px';
+                                button.disabled = true;
+                            });
 
-                        const gameWin = document.getElementById('game-win');
-                        gameWin.style.display = 'block';
+                            const gameWin = document.getElementById('game-win');
+                            gameWin.style.display = 'block';
+                        } else {
+                            incomplete.innerText = 'Columns must have an even number of tiles';
+                        };
                     } else {
-                        incomplete.innerText = 'Rows and columns must have an even number of tiles'
+                        incomplete.innerText = 'Rows must have an even number of tiles';
                     };
                 } else {
-                    incomplete.innerText = 'Each column must be unique'
+                    incomplete.innerText = 'Each column must be unique';
                 };
             } else {
-                incomplete.innerText = 'Each row must be unique'
+                incomplete.innerText = 'Each row must be unique';
             };
         } else {
             incomplete.innerText = '';
