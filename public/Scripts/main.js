@@ -48,7 +48,6 @@ const populateBoard = async (grid) => {
             if (currTileVal === null) currTile.addEventListener('click', e => {
               alterTile(e);
               randomBoard.checkWin(currentGrid)
-              console.log(currentGrid)
             });
             
             gameBox.appendChild(currTile);
