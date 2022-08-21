@@ -3,7 +3,7 @@ export default class Board4x4 {
         this.numRows = 4;
         this.numCols = 4;
         this.currentGrid = [];
-        this.fillBoard = this.reduceTiles();
+        this.fillBoard = this.checkColumnsUnique();
     };
 
     randomRowGenerator(row = []) {
@@ -43,7 +43,7 @@ export default class Board4x4 {
             c3: 0
         };
     
-        const grid = generateGrid();
+        const grid = this.generateGrid();
         for (let row = 0; row < grid.length; row++) {
             for (let col = 0; col < grid[row].length; col++) {
                 const currCol = `c${col}`
@@ -69,7 +69,7 @@ export default class Board4x4 {
             c3: []
         };
     
-        const grid = checkTotalCol();
+        const grid = this.checkTotalCol();
         for (let row = 0; row < grid.length; row++) {
             for (let col = 0; col < grid[row].length; col++) {
                 let currCol = `c${col}`;
@@ -91,10 +91,10 @@ export default class Board4x4 {
     };
     
     randomTotalGenerator() {
-        let randomTotal = [11, 12];
-        let randomIndex = Math.floor(Math.random() * randomTotal.length);
+        const randomTotal = [11, 12];
+        const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
-        return this.randomTotal[randomIndex];
+        return randomTotal[randomIndex];
     };
     
     randomTileFinder() {
@@ -105,22 +105,22 @@ export default class Board4x4 {
     
         if (this.currentGrid[randRow][randCol] !== null) return tile;
     
-        return thisrandomTileFinder();
+        return this.randomTileFinder();
     };
     
-    checkTile (obj) {
-        const tile = randomTileFinder();
+    checkObj (obj) {
+        const tile = this.randomTileFinder();
         const [row, col] = tile;
     
-        if (obj[row] > 2 && obj[col] > 2) {
+        if (obj[row] > 0 && obj[col] > 0) {
             return tile;
         };
     
-        return this.checkTile(obj);
+        return this.checkObj(obj);
     };
     
     reduceTiles() {
-        const randomTotal = randomTotalGenerator();
+        const randomTotal = this.randomTotalGenerator();
     
         const tileTracker = {
             r0: 4,
@@ -135,7 +135,7 @@ export default class Board4x4 {
         };
     
         while (tileTracker.total > 0) {
-            const currTile = checkTile(tileTracker);
+            const currTile = this.checkObj(tileTracker);
             const [row, col] = currTile;
     
             let rowNum = row.split('').splice(1, 1).join('');
@@ -148,7 +148,7 @@ export default class Board4x4 {
             tileTracker.total--;
         };
     
-        return tileTracker;
+        return this.currentGrid;
     };
 
     tileValue(row, col) {
@@ -167,7 +167,7 @@ export default class Board4x4 {
         return true;
     };
 
-    checkRows(board) {
+    winCheckRows(board) {
         const rows = {
             r0: [],
             r1: [],
@@ -178,7 +178,7 @@ export default class Board4x4 {
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
             for (let col = 0; col < board[row].length; col++) {
-                rows[currRow].push(this.grid[row][col]);
+                rows[currRow].push(this.currentGrid[row][col]);
             };
         };
 
@@ -194,7 +194,7 @@ export default class Board4x4 {
         return true;
     };
 
-    checkCols(board) {
+    winCheckCols(board) {
         const cols = {
             c0: [],
             c1: [],
@@ -206,7 +206,7 @@ export default class Board4x4 {
             for (let col = 0; col < board[row].length; col++) {
                 let currCol = `c${col}`;
 
-                cols[currCol].push(this.grid[row][col]);
+                cols[currCol].push(this.currentGrid[row][col]);
             };
         };
 
@@ -222,7 +222,7 @@ export default class Board4x4 {
         return true;
     };
 
-    checkTotalRow(board) {
+    winCheckTotalRow(board) {
         const values = {
             r0: 0,
             r1: 0,
@@ -246,7 +246,7 @@ export default class Board4x4 {
         return false;
     };
 
-    checkTotalCol(board) {
+    winCheckTotalCol(board) {
         const values = {
             c0: 0,
             c1: 0,
@@ -273,10 +273,10 @@ export default class Board4x4 {
     checkWin(board) {
         const incomplete = document.getElementById('incomplete');
         if (this.isBoardFull(board)) {
-            if (this.checkRows(board)) {
-                if (this.checkCols(board)) {
-                    if (this.checkTotalRow(board)) {
-                        if (this.checkTotalCol(board)) {
+            if (this.winCheckRows(board)) {
+                if (this.winCheckCols(board)) {
+                    if (this.winCheckTotalRow(board)) {
+                        if (this.winCheckTotalCol(board)) {
                             incomplete.innerText = '';
                             document.getElementById('current-minute').style.display = 'none';
                             document.getElementById('current-second').style.display = 'none';

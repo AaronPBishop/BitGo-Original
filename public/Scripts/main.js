@@ -1,8 +1,8 @@
 import Board4x4 from "./board-4x4.js";
 
 const randomBoard = new Board4x4();
-const presetTiles = randomBoard.fillBoard;
-const currentGrid = randomBoard.grid;
+const presetTiles = randomBoard.reduceTiles();
+const currentGrid = randomBoard.currentGrid;
 const gameBox = document.getElementById('game-box');
 
 const currentMinute = document.getElementById("current-minute");
@@ -48,6 +48,7 @@ const populateBoard = async (grid) => {
             if (currTileVal === null) currTile.addEventListener('click', e => {
               alterTile(e);
               randomBoard.checkWin(currentGrid)
+              console.log(currentGrid)
             });
             
             gameBox.appendChild(currTile);
