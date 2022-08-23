@@ -1,6 +1,6 @@
 # BitGo
 is a tile-based browser implementation of the game Binary Sudoku.
-Preset (gray) tiles may not be changed. Preset tiles may be clicked once to change their color to red, and clicked again to change their color to blue. To win, players must solve the board by adhering to three rules of logic: 
+Preset tiles may not be changed. Gray tiles may be clicked once to change their color to red, and clicked again to change their color to blue. To win, players must solve the board by adhering to three rules of logic: 
 
 * Each row and column must contain an equal amount of red tiles and blue tiles
 
