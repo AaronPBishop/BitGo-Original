@@ -1,2 +1,0 @@
-# Bitgo
-is a tile-based browser implementation of Binary Sudoku. Red tiles are '0's, and blue tiles are '1's. To win, players must solve the board by adhering to three rules of logic: rows and columns must be unique, no more than two tiles can be placed in a row, and each row and column must have an equal number of tiles.

@@ -1,9 +1,13 @@
 import Board4x4 from "./board-4x4.js";
 
 const randomBoard = new Board4x4();
-const presetTiles = randomBoard.reduceTiles();
+const presetBoard = randomBoard.reduceTiles();
 const currentGrid = randomBoard.currentGrid;
+
 const gameBox = document.getElementById('game-box');
+const stats = randomBoard.stats;
+
+console.log(stats);
 
 const currentMinute = document.getElementById("current-minute");
 const currentSecond = document.getElementById("current-second");
@@ -58,7 +62,7 @@ const populateBoard = async (grid) => {
 
 
 window.addEventListener('DOMContentLoaded', () => {
-    populateBoard(presetTiles)
+    populateBoard(presetBoard);
 
     const gameWin = document.getElementById('game-win');
 

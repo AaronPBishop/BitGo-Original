@@ -1,12 +1,17 @@
 export default class Board4x4 {
     constructor() {
-        this.numRows = 4;
-        this.numCols = 4;
         this.currentGrid = [];
-        this.fillBoard = this.checkColumnsUnique();
+        this.stats = {
+            Function1: 0,
+            Function2: 0,
+            Function3: 0,
+            Function4: 0
+        };
+        this.assembledBoard = this.checkColumnsUnique();
     };
 
-    randomRowGenerator(row = []) {
+    assembleRows(row = []) {
+        this.stats.Function1++;
         if (row.length === 4) {
             let total = 0;
             row.forEach(val => total += val);
@@ -14,36 +19,33 @@ export default class Board4x4 {
             if (total === 2) return row;
             else {
                 row = [];
-                return this.randomRowGenerator(row);
+                return this.assembleRows(row);
             };
         };
     
         row.push(Math.floor(Math.random() * 2));
     
-        return this.randomRowGenerator(row);
+        return this.assembleRows(row);
     };
     
-    generateGrid(visited = new Set(), grid = []) {
+    assembleGrid(visited = new Set(), grid = []) {
+        this.stats.Function2++;
         if (grid.length === 4) return grid;
     
-        const randomRow = this.randomRowGenerator();
+        const randomRow = this.assembleRows();
         if (!visited.has(randomRow.join(''))) {
             visited.add(randomRow.join(''))
             grid.push(randomRow);
         };
     
-        return this.generateGrid(visited, grid);
+        return this.assembleGrid(visited, grid);
     };
     
-    checkTotalCol() {
-        const values = {
-            c0: 0,
-            c1: 0,
-            c2: 0,
-            c3: 0
-        };
+    checkColTotals() {
+        this.stats.Function3++;
+        const values = { c0: 0, c1: 0, c2: 0, c3: 0 };
     
-        const grid = this.generateGrid();
+        const grid = this.assembleGrid();
         for (let row = 0; row < grid.length; row++) {
             for (let col = 0; col < grid[row].length; col++) {
                 const currCol = `c${col}`
@@ -58,18 +60,14 @@ export default class Board4x4 {
     
         if (check === 4) return grid;
     
-        return this.checkTotalCol();
+        return this.checkColTotals();
     };
     
     checkColumnsUnique(visited = new Set()) {
-        const cols = {
-            c0: [],
-            c1: [],
-            c2: [],
-            c3: []
-        };
+        this.stats.Function4++;
+        const cols = { c0: [], c1: [], c2: [], c3: [] };
     
-        const grid = this.checkTotalCol();
+        const grid = this.checkColTotals();
         for (let row = 0; row < grid.length; row++) {
             for (let col = 0; col < grid[row].length; col++) {
                 let currCol = `c${col}`;
@@ -82,7 +80,7 @@ export default class Board4x4 {
         for (let col = 0; col < colValues.length; col++) {
                 let currCol = Number(colValues[col].join(''));
     
-                if (visited.has(currCol)) return checkColumnsUnique(visited);
+                if (visited.has(currCol)) return this.checkColumnsUnique(visited);
                 visited.add(currCol);
         };
     
@@ -112,9 +110,7 @@ export default class Board4x4 {
         const tile = this.randomTileFinder();
         const [row, col] = tile;
     
-        if (obj[row] > 0 && obj[col] > 0) {
-            return tile;
-        };
+        if (obj[row] > 0 && obj[col] > 0) return tile;
     
         return this.checkObj(obj);
     };
@@ -122,17 +118,7 @@ export default class Board4x4 {
     reduceTiles() {
         const randomTotal = this.randomTotalGenerator();
     
-        const tileTracker = {
-            r0: 4,
-            r1: 4,
-            r2: 4,
-            r3: 4,
-            c0: 4,
-            c1: 4,
-            c2: 4,
-            c3: 4,
-            total: randomTotal
-        };
+        const tileTracker = { r0: 4, r1: 4, r2: 4, r3: 4, c0: 4, c1: 4, c2: 4, c3: 4, total: randomTotal };
     
         while (tileTracker.total > 0) {
             const currTile = this.checkObj(tileTracker);
@@ -144,7 +130,6 @@ export default class Board4x4 {
     
             tileTracker[row]--;
             tileTracker[col]--;
-    
             tileTracker.total--;
         };
     
@@ -152,7 +137,7 @@ export default class Board4x4 {
     };
 
     tileValue(row, col) {
-        return this.fillBoard[row][col];
+        return this.currentGrid[row][col];
     };
 
     isBoardFull(board) {
@@ -167,13 +152,8 @@ export default class Board4x4 {
         return true;
     };
 
-    winCheckRows(board) {
-        const rows = {
-            r0: [],
-            r1: [],
-            r2: [],
-            r3: []
-        };
+    endGameRowsUnique(board) {
+        const rows = { r0: [], r1: [], r2: [], r3: [] };
 
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
@@ -194,13 +174,8 @@ export default class Board4x4 {
         return true;
     };
 
-    winCheckCols(board) {
-        const cols = {
-            c0: [],
-            c1: [],
-            c2: [],
-            c3: []
-        };
+    endGameColsUnique(board) {
+        const cols = { c0: [], c1: [], c2: [], c3: [] };
 
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
@@ -222,13 +197,8 @@ export default class Board4x4 {
         return true;
     };
 
-    winCheckTotalRow(board) {
-        const values = {
-            r0: 0,
-            r1: 0,
-            r2: 0,
-            r3: 0
-        };
+    endGameRowTotals(board) {
+        const values = { r0: 0, r1: 0, r2: 0, r3: 0 };
 
         for (let row = 0; row < board.length; row++) {
             const currRow = `r${row}`
@@ -246,13 +216,8 @@ export default class Board4x4 {
         return false;
     };
 
-    winCheckTotalCol(board) {
-        const values = {
-            c0: 0,
-            c1: 0,
-            c2: 0,
-            c3: 0
-        };
+    endGameColTotals(board) {
+        const values = { c0: 0, c1: 0, c2: 0, c3: 0 };
 
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
@@ -273,10 +238,10 @@ export default class Board4x4 {
     checkWin(board) {
         const incomplete = document.getElementById('incomplete');
         if (this.isBoardFull(board)) {
-            if (this.winCheckRows(board)) {
-                if (this.winCheckCols(board)) {
-                    if (this.winCheckTotalRow(board)) {
-                        if (this.winCheckTotalCol(board)) {
+            if (this.endGameRowsUnique(board)) {
+                if (this.endGameColsUnique(board)) {
+                    if (this.endGameRowTotals(board)) {
+                        if (this.endGameColTotals(board)) {
                             incomplete.innerText = '';
                             document.getElementById('current-minute').style.display = 'none';
                             document.getElementById('current-second').style.display = 'none';
