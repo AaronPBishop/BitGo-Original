@@ -271,6 +271,7 @@ export default class Board4x4 {
             sessionStorage.setItem('hasWon', wins);
 
             document.getElementById('timer-current').style.opacity = '0%';
+            document.getElementById('timer-best').style.opacity = '0%';
 
             const buttons = document.querySelectorAll('.buttons');
             buttons.forEach(button => {
