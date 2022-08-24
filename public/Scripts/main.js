@@ -5,19 +5,26 @@ const presetBoard = randomBoard.reduceTiles();
 const currentGrid = randomBoard.currentGrid;
 
 const gameBox = document.getElementById('game-box');
-const stats = randomBoard.stats;
+console.log(randomBoard.stats);
 
-console.log(stats);
+const bestMin = document.getElementById('best-minute');
+const bestSec = document.getElementById('best-second');
 
-const currentMinute = document.getElementById("current-minute");
-const currentSecond = document.getElementById("current-second");
+if (sessionStorage.getItem('hasWon')) {
+  document.getElementById('timer-best').style.opacity = '100%';
+  bestMin.innerText = sessionStorage.getItem('bestMinute');
+  bestSec.innerText = sessionStorage.getItem('bestSecond');
+};
+
+const currMin = document.getElementById("current-minute");
+const currSec = document.getElementById("current-second");
 let seconds = 0;
 
 const timer = val => val > 9 ? val : "0" + val;
 
 setInterval(() => {
-    currentMinute.innerText = timer(parseInt(seconds / 60, 10));
-    currentSecond.innerText = timer(++seconds % 60);
+    currMin.innerText = timer(parseInt(seconds / 60, 10));
+    currSec.innerText = timer(++seconds % 60);
 }, 1000);
 
 const alterTile = e => {
@@ -51,7 +58,9 @@ const populateBoard = async (grid) => {
             if (currTileVal === 1) currTile.style.backgroundColor = 'blue';
             if (currTileVal === null) currTile.addEventListener('click', e => {
               alterTile(e);
-              randomBoard.checkWin(currentGrid)
+              randomBoard.checkWin(currentGrid);
+              randomBoard.setWin(currentGrid);
+              randomBoard.setBest(currentGrid, currMin, currSec, bestMin, bestSec);
             });
             
             gameBox.appendChild(currTile);

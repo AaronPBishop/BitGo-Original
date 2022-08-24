@@ -243,20 +243,7 @@ export default class Board4x4 {
                     if (this.endGameRowTotals(board)) {
                         if (this.endGameColTotals(board)) {
                             incomplete.innerText = '';
-                            document.getElementById('current-minute').style.display = 'none';
-                            document.getElementById('current-second').style.display = 'none';
-                            document.getElementById('delimiter').style.display = 'none';
-
-                            const buttons = document.querySelectorAll('.buttons');
-                            buttons.forEach(button => {
-                                button.style.opacity = '0.8';
-                                button.style.bottom = '0px';
-                                button.style.top = '10px';
-                                button.disabled = true;
-                            });
-
-                            const gameWin = document.getElementById('game-win');
-                            gameWin.style.display = 'block';
+                            return true;
                         } else {
                             incomplete.innerText = 'Columns must have an even number of tiles';
                         };
@@ -271,6 +258,41 @@ export default class Board4x4 {
             };
         } else {
             incomplete.innerText = '';
+        };
+        return false;
+    };
+
+    setWin(board) {
+        let wins = 0;
+        if (sessionStorage.getItem('hasWon')) wins = sessionStorage.getItem('hasWon');
+
+        if (this.checkWin(board)) {
+            wins++;
+            sessionStorage.setItem('hasWon', wins);
+
+            document.getElementById('timer-current').style.opacity = '0%';
+
+            const buttons = document.querySelectorAll('.buttons');
+            buttons.forEach(button => {
+                button.style.opacity = '0.8';
+                button.style.bottom = '90px';
+                button.disabled = true;
+            });
+            
+            const gameWin = document.getElementById('game-win');
+            gameWin.style.display = 'block';
+        };
+    };
+
+    setBest(board, currMin, currSec, bestMin, bestSec) {
+        if (this.checkWin(board)) {
+            if (sessionStorage.getItem('hasWon') > 1) {
+                if (Number(currMin.innerText) >= Number(bestMin.innerText) && Number(currSec.innerText) >= Number(bestSec.innerText)) return;
+                if (Number(currMin.innerText) > Number(bestMin.innerText) && Number(currSec.innerText) <= Number(bestSec.innerText)) return;
+            };
+
+            sessionStorage.setItem('bestMinute', currMin.innerText);
+            sessionStorage.setItem('bestSecond', currSec.innerText);
         };
     };
 };
