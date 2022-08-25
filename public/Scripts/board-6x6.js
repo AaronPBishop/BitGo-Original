@@ -153,7 +153,7 @@ export default class Board6x6 {
     };
 
     endGameRowsUnique(board) {
-        const rows = { r0: [], r1: [], r2: [], r3: [] };
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [] };
 
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
