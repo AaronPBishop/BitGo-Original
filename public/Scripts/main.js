@@ -1,6 +1,6 @@
-import Board4x4 from "./board-4x4.js";
+import Board6x6 from "./board-6x6";
 
-const randomBoard = new Board4x4();
+const randomBoard = new Board6x6();
 const presetBoard = randomBoard.reduceTiles();
 const currentGrid = randomBoard.currentGrid;
 

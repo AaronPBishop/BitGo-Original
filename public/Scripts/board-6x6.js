@@ -1,4 +1,4 @@
-export default class Board4x4 {
+export default class Board6x6 {
     constructor() {
         this.currentGrid = [];
         this.stats = {
@@ -12,11 +12,11 @@ export default class Board4x4 {
 
     assembleRows(row = []) {
         this.stats.Function1++;
-        if (row.length === 4) {
+        if (row.length === 6) {
             let total = 0;
             row.forEach(val => total += val);
     
-            if (total === 2) return row;
+            if (total === 3) return row;
             else {
                 row = [];
                 return this.assembleRows(row);
@@ -30,7 +30,7 @@ export default class Board4x4 {
     
     assembleGrid(visited = new Set(), grid = []) {
         this.stats.Function2++;
-        if (grid.length === 4) return grid;
+        if (grid.length === 6) return grid;
     
         const randomRow = this.assembleRows();
         if (!visited.has(randomRow.join(''))) {
@@ -43,7 +43,7 @@ export default class Board4x4 {
     
     checkColTotals() {
         this.stats.Function3++;
-        const values = { c0: 0, c1: 0, c2: 0, c3: 0 };
+        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0 };
     
         const grid = this.assembleGrid();
         for (let row = 0; row < grid.length; row++) {
@@ -56,16 +56,16 @@ export default class Board4x4 {
         };
     
         let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 2) check++});
+        Object.values(values).forEach(val => {if (Number(val) === 3) check++});
     
-        if (check === 4) return grid;
+        if (check === 6) return grid;
     
         return this.checkColTotals();
     };
     
     checkColumnsUnique(visited = new Set()) {
         this.stats.Function4++;
-        const cols = { c0: [], c1: [], c2: [], c3: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
     
         const grid = this.checkColTotals();
         for (let row = 0; row < grid.length; row++) {
@@ -89,15 +89,15 @@ export default class Board4x4 {
     };
     
     randomTotalGenerator() {
-        const randomTotal = [11, 12];
+        const randomTotal = [29, 30];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
-        return randomTotal[Math.floor(Math.random() * randomTotal.length)];
+        return randomTotal[randomIndex];
     };
     
     randomTileFinder() {
-        const randRow = Math.floor(Math.random() * 4);
-        const randCol = Math.floor(Math.random() * 4);
+        const randRow = Math.floor(Math.random() * 6);
+        const randCol = Math.floor(Math.random() * 6);
     
         const tile = [`r${randRow}`, `c${randCol}`];
     
@@ -118,7 +118,7 @@ export default class Board4x4 {
     reduceTiles() {
         const randomTotal = this.randomTotalGenerator();
     
-        const tileTracker = { r0: 4, r1: 4, r2: 4, r3: 4, c0: 4, c1: 4, c2: 4, c3: 4, total: randomTotal };
+        const tileTracker = { r0: 6, r1: 6, r2: 6, r3: 6, r4: 6, r5: 6, c0: 6, c1: 6, c2: 6, c3: 6, c4: 6, c5: 6, total: randomTotal };
     
         while (tileTracker.total > 0) {
             const currTile = this.checkObj(tileTracker);
@@ -175,7 +175,7 @@ export default class Board4x4 {
     };
 
     endGameColsUnique(board) {
-        const cols = { c0: [], c1: [], c2: [], c3: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
 
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
@@ -198,7 +198,7 @@ export default class Board4x4 {
     };
 
     endGameRowTotals(board) {
-        const values = { r0: 0, r1: 0, r2: 0, r3: 0 };
+        const values = { r0: 0, r1: 0, r2: 0, r3: 0, r4: 0, r5: 0 };
 
         for (let row = 0; row < board.length; row++) {
             const currRow = `r${row}`
@@ -210,14 +210,14 @@ export default class Board4x4 {
         };
 
         let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 2) check++});
+        Object.values(values).forEach(val => {if (Number(val) === 3) check++});
 
-        if (check === 4) return true;
+        if (check === 6) return true;
         return false;
     };
 
     endGameColTotals(board) {
-        const values = { c0: 0, c1: 0, c2: 0, c3: 0 };
+        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0 };
 
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
@@ -229,9 +229,9 @@ export default class Board4x4 {
         };
 
         let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 2) check++});
+        Object.values(values).forEach(val => {if (Number(val) === 3) check++});
 
-        if (check === 4) return true;
+        if (check === 6) return true;
         return false;
     };
 
