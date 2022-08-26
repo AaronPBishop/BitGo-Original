@@ -18,45 +18,65 @@ export default class Board6x6 {
 
     assembleRows(row = []) {
         this.stats.Function1++;
-        if (row.length === 6) {
-            let total = 0;
-            row.forEach(val => total += val);
 
-            for (let i = 0; i < row.length; i++) {
-                const first = row[i];
-                const second = row[i + 1];
-                const third = row[i + 2];
-                
-                if (first + second + third === 0) return this.assembleRows();
-                if (first + second + third === 3) return this.assembleRows();
-            };
+        const permutations = [[1, 0], [1, 1], [0, 1], [0, 0]];
+        for (let i = 0; i < 3; i++) {
+            const randomIndex = Math.floor(Math.random() * permutations.length);
     
-            if (total === 3) return row;
-            else {
-                row = [];
-                return this.assembleRows(row);
-            };
+            row.push(...permutations[randomIndex]);
         };
     
-        row.push(Math.floor(Math.random() * 2));
+        for (let i = 0; i < row.length; i++) {
+            const first = row[i];
+            const second = row[i + 1];
+            const third = row[i + 2];
+            
+            if (first + second + third === 0) return this.assembleRows();
+            if (first + second + third === 3) return this.assembleRows();
+        };
     
-        return this.assembleRows(row);
+        let total = 0;
+        row.forEach(val => total += val);
+        if (total === 3) return row;
+        
+        return this.assembleRows();
     };
     
     assembleGrid(visited = new Set(), grid = []) {
         this.stats.Function2++;
-        if (grid.length === 6) return grid;
-    
-        const randomRow = this.assembleRows();
-        if (!visited.has(randomRow.join(''))) {
-            visited.add(randomRow.join(''))
-            grid.push(randomRow);
+        while (grid.length < 6) {
+            const randomRow = this.assembleRows();
+            if (!visited.has(randomRow.join(''))) {
+                visited.add(randomRow.join(''))
+                grid.push(randomRow);
+            };
         };
     
-        return this.assembleGrid(visited, grid);
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
+            for (let row = 0; row < grid.length; row++) {
+                for (let col = 0; col < grid[row].length; col++) {
+                    let currCol = `c${col}`;
+        
+                    cols[currCol].push(grid[row][col]);
+                };
+            };
+    
+            const colValues = Object.values(cols);
+            for (let row = 0; row < colValues.length; row++) {
+                for (let col = 0; col < colValues[row].length; col++) {
+                    const first = colValues[row][col];
+                    const second = colValues[row][col + 1];
+                    const third = colValues[row][col + 2];
+                    
+                    if (first + second + third === 0) return this.assembleGrid();
+                    if (first + second + third === 3) return this.assembleGrid();
+                };
+            };
+    
+        return grid;
     };
     
-    assembleColumns() {
+    checkColumnTotals() {
         this.stats.Function3++;
         const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0 };
     
@@ -72,39 +92,17 @@ export default class Board6x6 {
     
         let check = 0;
         Object.values(values).forEach(val => {if (Number(val) === 3) check++});
-
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                let currCol = `c${col}`;
-    
-                cols[currCol].push(grid[row][col]);
-            };
-        };
-
-        const colValues = Object.values(cols);
-        for (let row = 0; row < colValues.length; row++) {
-            for (let col = 0; col < colValues[row].length; col++) {
-                const first = colValues[row][col];
-                const second = colValues[row][col + 1];
-                const third = colValues[row][col + 2];
-                
-                if (first + second + third === 0) return this.assembleColumns();
-                if (first + second + third === 3) return this.assembleColumns();
-            };
-        };
-
     
         if (check === 6) return grid;
     
-        return this.assembleColumns();
+        return this.checkColumnTotals();
     };
     
     checkColumnsUnique(visited = new Set()) {
         this.stats.Function4++;
         const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
     
-        const grid = this.assembleColumns();
+        const grid = this.checkColumnTotals();
         for (let row = 0; row < grid.length; row++) {
             for (let col = 0; col < grid[row].length; col++) {
                 let currCol = `c${col}`;
@@ -117,7 +115,7 @@ export default class Board6x6 {
         for (let col = 0; col < colValues.length; col++) {
                 let currCol = Number(colValues[col].join(''));
     
-                if (visited.has(currCol)) return this.checkColumnsUnique(visited);
+                if (visited.has(currCol)) return this.checkColumnsUnique();
                 visited.add(currCol);
         };
     
