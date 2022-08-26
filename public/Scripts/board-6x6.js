@@ -7,6 +7,12 @@ export default class Board6x6 {
             Function3: 0,
             Function4: 0
         };
+        // while should run as long as assembleGrid !== null
+        // Wrap this.checkCols in while loop, look for return value => good; else return undefined 
+        // Check within each function, if undefined is ever given, return all the way back up
+        // If undefined, run functions again
+        // Set stats back to 0
+        // On every recursive call to assembleGrid, check this.stats(func1)
         this.assembledBoard = this.checkColumnsUnique();
     };
 
@@ -15,6 +21,15 @@ export default class Board6x6 {
         if (row.length === 6) {
             let total = 0;
             row.forEach(val => total += val);
+
+            for (let i = 0; i < row.length; i++) {
+                const first = row[i];
+                const second = row[i + 1];
+                const third = row[i + 2];
+                
+                if (first + second + third === 0) return this.assembleRows();
+                if (first + second + third === 3) return this.assembleRows();
+            };
     
             if (total === 3) return row;
             else {
@@ -41,7 +56,7 @@ export default class Board6x6 {
         return this.assembleGrid(visited, grid);
     };
     
-    checkColTotals() {
+    assembleColumns() {
         this.stats.Function3++;
         const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0 };
     
@@ -57,17 +72,39 @@ export default class Board6x6 {
     
         let check = 0;
         Object.values(values).forEach(val => {if (Number(val) === 3) check++});
+
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
+        for (let row = 0; row < grid.length; row++) {
+            for (let col = 0; col < grid[row].length; col++) {
+                let currCol = `c${col}`;
+    
+                cols[currCol].push(grid[row][col]);
+            };
+        };
+
+        const colValues = Object.values(cols);
+        for (let row = 0; row < colValues.length; row++) {
+            for (let col = 0; col < colValues[row].length; col++) {
+                const first = colValues[row][col];
+                const second = colValues[row][col + 1];
+                const third = colValues[row][col + 2];
+                
+                if (first + second + third === 0) return this.assembleColumns();
+                if (first + second + third === 3) return this.assembleColumns();
+            };
+        };
+
     
         if (check === 6) return grid;
     
-        return this.checkColTotals();
+        return this.assembleColumns();
     };
     
     checkColumnsUnique(visited = new Set()) {
         this.stats.Function4++;
         const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
     
-        const grid = this.checkColTotals();
+        const grid = this.assembleColumns();
         for (let row = 0; row < grid.length; row++) {
             for (let col = 0; col < grid[row].length; col++) {
                 let currCol = `c${col}`;
@@ -89,7 +126,7 @@ export default class Board6x6 {
     };
     
     randomTotalGenerator() {
-        const randomTotal = [29, 30];
+        const randomTotal = [21, 24];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
         return randomTotal[randomIndex];
