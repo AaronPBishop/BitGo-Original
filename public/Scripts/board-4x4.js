@@ -17,10 +17,7 @@ export default class Board4x4 {
             row.forEach(val => total += val);
     
             if (total === 2) return row;
-            else {
-                row = [];
-                return this.assembleRows(row);
-            };
+            return this.assembleRows();
         };
     
         row.push(Math.floor(Math.random() * 2));
