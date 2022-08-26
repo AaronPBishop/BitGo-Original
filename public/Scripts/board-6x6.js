@@ -7,12 +7,7 @@ export default class Board6x6 {
             Function3: 0,
             Function4: 0
         };
-        // while should run as long as assembleGrid !== null
-        // Wrap this.checkCols in while loop, look for return value => good; else return undefined 
-        // Check within each function, if undefined is ever given, return all the way back up
-        // If undefined, run functions again
-        // Set stats back to 0
-        // On every recursive call to assembleGrid, check this.stats(func1)
+
         this.assembledBoard = this.checkColumnsUnique();
     };
 
@@ -53,25 +48,25 @@ export default class Board6x6 {
         };
     
         const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
-            for (let row = 0; row < grid.length; row++) {
-                for (let col = 0; col < grid[row].length; col++) {
-                    let currCol = `c${col}`;
+        for (let row = 0; row < grid.length; row++) {
+            for (let col = 0; col < grid[row].length; col++) {
+                let currCol = `c${col}`;
         
-                    cols[currCol].push(grid[row][col]);
-                };
+                cols[currCol].push(grid[row][col]);
             };
+        };
     
-            const colValues = Object.values(cols);
-            for (let row = 0; row < colValues.length; row++) {
-                for (let col = 0; col < colValues[row].length; col++) {
-                    const first = colValues[row][col];
-                    const second = colValues[row][col + 1];
-                    const third = colValues[row][col + 2];
+        const colValues = Object.values(cols);
+        for (let row = 0; row < colValues.length; row++) {
+            for (let col = 0; col < colValues[row].length; col++) {
+                const first = colValues[row][col];
+                const second = colValues[row][col + 1];
+                const third = colValues[row][col + 2];
                     
-                    if (first + second + third === 0) return this.assembleGrid();
-                    if (first + second + third === 3) return this.assembleGrid();
-                };
+                if (first + second + third === 0) return this.assembleGrid();
+                if (first + second + third === 3) return this.assembleGrid();
             };
+        };
     
         return grid;
     };
@@ -124,7 +119,7 @@ export default class Board6x6 {
     };
     
     randomTotalGenerator() {
-        const randomTotal = [21, 24];
+        const randomTotal = [23, 24, 25, 26];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
         return randomTotal[randomIndex];
@@ -181,6 +176,46 @@ export default class Board6x6 {
                 let currTile = board[row][col];
 
                 if (currTile === null) return false;
+            };
+        };
+
+        return true;
+    };
+
+    endGameRowTriplets(board) {
+        for (let row = 0; row < board.length; row++) {
+            for (let col = 0; col < board.length; row++) {
+                const first = board[row][col];
+                const second = board[row][col + 1];
+                const third = board[row][col + 2];
+
+                if (first + second + third === 0) return false;
+                if (first + second + third === 3) return false;
+            };
+        };
+        
+        return true;
+    };
+
+    endGameColTriplets(board) {
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
+        for (let row = 0; row < grid.length; row++) {
+            for (let col = 0; col < grid[row].length; col++) {
+                let currCol = `c${col}`;
+        
+                cols[currCol].push(grid[row][col]);
+            };
+        };
+    
+        const colValues = Object.values(cols);
+        for (let row = 0; row < colValues.length; row++) {
+            for (let col = 0; col < colValues[row].length; col++) {
+                const first = colValues[row][col];
+                const second = colValues[row][col + 1];
+                const third = colValues[row][col + 2];
+                    
+                if (first + second + third === 0) return false;
+                if (first + second + third === 3) return false;
             };
         };
 
@@ -273,27 +308,36 @@ export default class Board6x6 {
     checkWin(board) {
         const incomplete = document.getElementById('incomplete');
         if (this.isBoardFull(board)) {
-            if (this.endGameRowsUnique(board)) {
-                if (this.endGameColsUnique(board)) {
-                    if (this.endGameRowTotals(board)) {
-                        if (this.endGameColTotals(board)) {
-                            incomplete.innerText = '';
-                            return true;
+            if (this.endGameRowTriplets(board)) {
+                if (this.endGameColTriplets(board)) {
+                    if (this.endGameRowsUnique(board)) {
+                        if (this.endGameColsUnique(board)) {
+                            if (this.endGameRowTotals(board)) {
+                                if (this.endGameColTotals(board)) {
+                                    incomplete.innerText = '';
+                                    return true;
+                                } else {
+                                    incomplete.innerText = 'Columns must have an even number of tiles';
+                                };
+                            } else {
+                                incomplete.innerText = 'Rows must have an even number of tiles';
+                            };
                         } else {
-                            incomplete.innerText = 'Columns must have an even number of tiles';
+                            incomplete.innerText = 'Each column must be unique';
                         };
                     } else {
-                        incomplete.innerText = 'Rows must have an even number of tiles';
+                        incomplete.innerText = 'Each row must be unique';
                     };
                 } else {
-                    incomplete.innerText = 'Each column must be unique';
+                    incomplete.innerText = 'More than two same-color consecutive tiles in a column are not allowed';
                 };
             } else {
-                incomplete.innerText = 'Each row must be unique';
+                incomplete.innerText = 'More than two same-color consecutive tiles in a row are not allowed';
             };
         } else {
             incomplete.innerText = '';
         };
+
         return false;
     };
 
@@ -311,7 +355,7 @@ export default class Board6x6 {
             const buttons = document.querySelectorAll('.buttons');
             buttons.forEach(button => {
                 button.style.opacity = '0.8';
-                button.style.bottom = '90px';
+                button.style.bottom = '100px';
                 button.disabled = true;
             });
             

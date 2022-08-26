@@ -1,0 +1,74 @@
+body {
+    background-image: url("Bits.jpg");
+    background-color: rgb(41, 38, 38);
+    background-size: cover;
+
+    font-family: 'Orbitron', sans-serif;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+h1 {
+    color: white;
+    position: relative;
+    top: 80px;
+}
+
+#content {
+    position: relative;
+    top: 50px;
+
+    margin-left: 500px;
+    margin-right: 500px;
+
+    min-height: 500px;
+    max-height: 500px;
+    border-radius: 50px;
+
+    background-color: rgb(0, 0, 0);
+    opacity: 0.95;
+    border: 3px solid rgb(130, 138, 255);
+    box-shadow: 0px 10px 20px red;
+}
+
+#board-4x4 {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+
+    background-size: cover;
+    min-height: 75px;
+    min-width: 75px;
+
+    position: relative;
+    top: 125px;
+    right: 20px;
+
+    background-color: red;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#board-6x6 {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+
+    background-size: cover;
+    min-height: 75px;
+    min-width: 75px;
+
+    position: relative;
+    top: 125px;
+    left: 20px;
+
+    background-color: blue;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+button:hover {
+    box-shadow: 5px 5px 5px 1px rgb(172, 9, 9);
+}

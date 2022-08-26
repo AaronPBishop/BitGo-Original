@@ -19,7 +19,7 @@ h1 {
     opacity: 0.85;
     border: 3px solid rgb(130, 138, 255);
 
-    bottom: 15px;
+    bottom: 20px;
     color: white;
 }
 
@@ -32,21 +32,21 @@ h1 {
     box-shadow: 0px 10px 20px red;
 
     position: relative;
-    bottom: 25px;
+    bottom: 31px;
     border-radius: 20px;
     opacity: 97%;
 }
 
 .buttons {
     position: relative;
-    bottom: 90px;
+    bottom: 70px;
 
     background-color: rgb(41, 38, 38);
 
-    min-height: 90px;
-    max-height: 90px;
-    min-width: 90px;
-    max-width: 90px;
+    min-height: 88px;
+    max-height: 88px;
+    min-width: 88px;
+    max-width: 88px;
     border-radius: 10px;
     margin: 2px;
 
@@ -65,7 +65,7 @@ h1 {
     color: white;
     display: inline-flex;
     position: relative;
-    top: 520px;
+    top: 530px;
 }
 
 #timer-best {
@@ -76,12 +76,12 @@ h1 {
     color: white;
     display: inline-flex;
     position: relative;
-    bottom: 5px;
+    bottom: 8px;
 }
 
 #game-win {
     position: relative;
-    top: 440px;
+    top: 500px;
 
     color: white;
     /* background-color: rgb(41, 38, 38); */
@@ -103,5 +103,5 @@ h1 {
 #incomplete {
     position: relative;
     color: white;
-    bottom: 65px;
+    bottom: 77px;
 }
