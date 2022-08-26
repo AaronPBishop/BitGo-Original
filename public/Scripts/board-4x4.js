@@ -80,7 +80,7 @@ export default class Board4x4 {
         for (let col = 0; col < colValues.length; col++) {
                 let currCol = Number(colValues[col].join(''));
     
-                if (visited.has(currCol)) return this.checkColumnsUnique(visited);
+                if (visited.has(currCol)) return this.checkColumnsUnique();
                 visited.add(currCol);
         };
     
