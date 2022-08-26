@@ -89,7 +89,7 @@ export default class Board4x4 {
         const randomTotal = [11, 12];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
-        return randomTotal[randomIndex];
+        return randomTotal[Math.floor(Math.random() * randomTotal.length)];
     };
     
     randomTileFinder() {

@@ -1,5 +1,5 @@
 body {
-    background-image: url("Circuit-Space.webp");
+    background-image: url("Bits.jpg");
     background-color: rgb(41, 38, 38);
     background-size: cover;
 
@@ -9,99 +9,66 @@ body {
 }
 
 h1 {
-    position: relative;
-    margin-left: 700px;
-    margin-right: 700px;
-    box-shadow: 2px 15px 15px rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-
-    background-color: rgb(41, 41, 160);
-    opacity: 0.85;
-    border: 3px solid rgb(130, 138, 255);
-
-    bottom: 15px;
     color: white;
+    position: relative;
+    top: 80px;
 }
 
-#game-box {
+#content {
+    position: relative;
+    top: 50px;
+
+    margin-left: 500px;
+    margin-right: 500px;
+
+    min-height: 500px;
+    max-height: 500px;
+    border-radius: 50px;
+
     background-color: rgb(0, 0, 0);
-    min-height: 600px;
-    max-height: 600px;
-    min-width: 50%;
-    max-width: 50%;
+    opacity: 0.95;
+    border: 3px solid rgb(130, 138, 255);
     box-shadow: 0px 10px 20px red;
-
-    position: relative;
-    bottom: 15px;
-    border-radius: 20px;
-    opacity: 97%;
 }
 
-.buttons {
-    position: relative;
-    bottom: 60px;
-
-    background-color: rgb(41, 38, 38);
-
-    min-height: 115px;
-    max-height: 115px;
-    min-width: 115px;
-    max-width: 115px;
-    border-radius: 10px;
-    margin: 2px;
-
-    transition: background .15s linear, color .15s linear;
-}
-
-.buttons:hover {
-    box-shadow: 0px 0px 5px red;
-}
-
-#timer-current {
-    opacity: 100%;
-}
-
-.current-time {
+#board-4x4 {
     color: white;
-    display: inline-flex;
-    position: relative;
-    top: 470px;
-}
-
-#timer-best {
-    opacity: 0%;
-}
-
-.best-time {
-    color: white;
-    display: inline-flex;
-    position: relative;
-    bottom: 5px;
-}
-
-#game-win {
-    position: relative;
-    top: 440px;
-
-    color: white;
-    /* background-color: rgb(41, 38, 38); */
-    background-color: rgb(41, 41, 160);
-    opacity: 0.85;
-    border: 2px solid rgb(130, 138, 255);
-    border-radius: 8px;
-
+    font-size: 20px;
+    text-align: center;
     font-family: 'Orbitron', sans-serif;
-    height: 30px;
 
-    display: none;
-}
+    background-size: cover;
+    min-height: 75px;
+    min-width: 75px;
 
-#game-win:hover {
-    box-shadow: 0px 5px 5px red;
-}
-
-#incomplete {
     position: relative;
+    top: 125px;
+    right: 20px;
+
+    background-color: red;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#board-6x6 {
     color: white;
-    bottom: 65px;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+
+    background-size: cover;
+    min-height: 75px;
+    min-width: 75px;
+
+    position: relative;
+    top: 125px;
+    left: 20px;
+
+    background-color: blue;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+button:hover {
+    box-shadow: 5px 5px 5px 1px rgb(172, 9, 9);
 }
