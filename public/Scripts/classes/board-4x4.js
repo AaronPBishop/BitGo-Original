@@ -89,48 +89,72 @@ export default class Board4x4 {
         const randomTotal = [11, 12];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
-        return randomTotal[Math.floor(Math.random() * randomTotal.length)];
+        return randomTotal[randomIndex];
     };
     
-    randomTileFinder() {
+    randomTileFinder(grid) {
         const randRow = Math.floor(Math.random() * 4);
         const randCol = Math.floor(Math.random() * 4);
     
         const tile = [`r${randRow}`, `c${randCol}`];
     
-        if (this.currentGrid[randRow][randCol] !== null) return tile;
+        if (grid[randRow][randCol] !== null) return tile;
     
-        return this.randomTileFinder();
+        return this.randomTileFinder(grid);
     };
+
+    checkObj(rows, cols) {
+        const rowValues = Object.values(rows);
+        const colValues = Object.values(cols);
+        for (let pillar = 0; pillar < rowValues.length; pillar++) {
+            let currentRow = rowValues[pillar];
+            let currentCol = colValues[pillar];
     
-    checkObj (obj) {
-        const tile = this.randomTileFinder();
-        const [row, col] = tile;
+            let rowVals = 0;
+            currentRow.forEach(val => {if (val !== null) rowVals++});
     
-        if (obj[row] > 0 && obj[col] > 0) return tile;
+            let colVals = 0;
+            currentCol.forEach(val => {if (val !== null) colVals++});
     
-        return this.checkObj(obj);
+            if (rowVals > 2) return false;
+            if (colVals > 2) return false;
+        };
+
+        return true;
     };
     
     reduceTiles() {
-        const randomTotal = this.randomTotalGenerator();
+        let randomTotal = this.randomTotalGenerator();
+        const grid = this.currentGrid.map(inner => inner.slice())
     
-        const tileTracker = { r0: 4, r1: 4, r2: 4, r3: 4, c0: 4, c1: 4, c2: 4, c3: 4, total: randomTotal };
-    
-        while (tileTracker.total > 0) {
-            const currTile = this.checkObj(tileTracker);
-            const [row, col] = currTile;
+        while (randomTotal > 0) {
+            const randomTile = this.randomTileFinder(grid);
+            const [row, col] = randomTile;
     
             let rowNum = row.split('').splice(1, 1).join('');
             let colNum = col.split('').splice(1, 1).join('');
-            this.currentGrid[rowNum][colNum] = null;
-    
-            tileTracker[row]--;
-            tileTracker[col]--;
-            tileTracker.total--;
+            grid[rowNum][colNum] = null;
+
+            randomTotal--;
         };
     
-        return this.currentGrid;
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
+        for (let row = 0; row < grid.length; row++) {
+            let currRow = `r${row}`;
+    
+            for (let col = 0; col < grid[row].length; col++) {
+                let currCol = `c${col}`;
+    
+                rows[currRow].push(grid[row][col]);
+                cols[currCol].push(grid[row][col]);
+            };
+        };
+
+        if (!this.checkObj(rows, cols)) return this.reduceTiles();
+    
+        this.currentGrid = grid;
+        return grid;
     };
 
     tileValue(row, col) {

@@ -1,4 +1,4 @@
-import Board4x4 from "./board-4x4.js";
+import Board4x4 from "./classes/board-4x4.js";
 
 const randomBoard = new Board4x4();
 const presetBoard = randomBoard.reduceTiles();
