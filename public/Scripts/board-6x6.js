@@ -183,27 +183,36 @@ export default class Board6x6 {
     };
 
     endGameRowTriplets(board) {
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [] };
         for (let row = 0; row < board.length; row++) {
-            for (let col = 0; col < board.length; row++) {
-                const first = board[row][col];
-                const second = board[row][col + 1];
-                const third = board[row][col + 2];
+            let currRow = `r${row}`;
+            for (let col = 0; col < board[row].length; col++) {
+                rows[currRow].push(this.currentGrid[row][col]);
+            };
+        };
 
+        const rowValues = Object.values(rows);
+        for (let row = 0; row < rowValues.length; row++) {
+            for (let col = 0; col < rowValues[row].length; col++) {
+                const first = rowValues[row][col];
+                const second = rowValues[row][col + 1];
+                const third = rowValues[row][col + 2];
+                    
                 if (first + second + third === 0) return false;
                 if (first + second + third === 3) return false;
             };
         };
-        
+
         return true;
     };
 
     endGameColTriplets(board) {
         const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
+        for (let row = 0; row < board.length; row++) {
+            for (let col = 0; col < board[row].length; col++) {
                 let currCol = `c${col}`;
         
-                cols[currCol].push(grid[row][col]);
+                cols[currCol].push(board[row][col]);
             };
         };
     
@@ -224,7 +233,6 @@ export default class Board6x6 {
 
     endGameRowsUnique(board) {
         const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [] };
-
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
             for (let col = 0; col < board[row].length; col++) {
@@ -246,7 +254,6 @@ export default class Board6x6 {
 
     endGameColsUnique(board) {
         const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
-
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
                 let currCol = `c${col}`;
