@@ -10,10 +10,10 @@ console.log(randomBoard.stats);
 const bestMin = document.getElementById('best-minute');
 const bestSec = document.getElementById('best-second');
 
-if (sessionStorage.getItem('hasWon')) {
+if (sessionStorage.getItem('hasWon-6x6')) {
   document.getElementById('timer-best').style.opacity = '100%';
-  bestMin.innerText = sessionStorage.getItem('bestMinute');
-  bestSec.innerText = sessionStorage.getItem('bestSecond');
+  bestMin.innerText = sessionStorage.getItem('bestMinute-6x6');
+  bestSec.innerText = sessionStorage.getItem('bestSecond-6x6');
 };
 
 const currMin = document.getElementById("current-minute");

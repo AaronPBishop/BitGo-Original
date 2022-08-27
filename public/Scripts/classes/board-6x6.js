@@ -374,11 +374,11 @@ export default class Board6x6 {
 
     setWin(board) {
         let wins = 0;
-        if (sessionStorage.getItem('hasWon')) wins = sessionStorage.getItem('hasWon');
+        if (sessionStorage.getItem('hasWon-6x6')) wins = sessionStorage.getItem('hasWon-6x6');
 
         if (this.checkWin(board)) {
             wins++;
-            sessionStorage.setItem('hasWon', wins);
+            sessionStorage.setItem('hasWon-6x6', wins);
 
             document.getElementById('timer-current').style.opacity = '0%';
             document.getElementById('timer-best').style.opacity = '0%';
@@ -397,13 +397,13 @@ export default class Board6x6 {
 
     setBest(board, currMin, currSec, bestMin, bestSec) {
         if (this.checkWin(board)) {
-            if (sessionStorage.getItem('hasWon') > 1) {
+            if (sessionStorage.getItem('hasWon-6x6') > 1) {
                 if (Number(currMin.innerText) >= Number(bestMin.innerText) && Number(currSec.innerText) >= Number(bestSec.innerText)) return;
                 if (Number(currMin.innerText) > Number(bestMin.innerText) && Number(currSec.innerText) <= Number(bestSec.innerText)) return;
             };
 
-            sessionStorage.setItem('bestMinute', currMin.innerText);
-            sessionStorage.setItem('bestSecond', currSec.innerText);
+            sessionStorage.setItem('bestMinute-6x6', currMin.innerText);
+            sessionStorage.setItem('bestSecond-6x6', currSec.innerText);
         };
     };
 };
