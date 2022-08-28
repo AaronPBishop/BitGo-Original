@@ -158,7 +158,7 @@ export default class Board6x6 {
     
     reduceTiles() {
         let randomTotal = this.randomTotalGenerator();
-        const grid = this.currentGrid.map(inner => inner.slice())
+        const grid = this.currentGrid.map(inner => inner.slice());
     
         while (randomTotal > 0) {
             const randomTile = this.randomTileFinder(grid);
