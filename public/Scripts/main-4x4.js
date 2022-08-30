@@ -40,6 +40,17 @@ const alterTile = e => {
     };
 };
 
+const lockTile = e => {
+  if (e.target.style.backgroundImage === '') {
+    e.target.style.backgroundImage = 'url(./styles/images/lock.png)';
+    e.target.style.backgroundPosition = 'center';
+    e.target.style.backgroundRepeat = 'no-repeat';
+    e.target.style.backgroundSize = '50px';
+  } else {
+    e.target.style.backgroundImage = '';
+  };
+};
+
 const populateBoard = async (grid) => {
   if (grid) {
     for (let row = 0; row < grid.length; row++) {
@@ -54,8 +65,16 @@ const populateBoard = async (grid) => {
 
             const currTileVal = randomBoard.tileValue(currTile.dataset.row, currTile.dataset.col);
 
-            if (currTileVal === 0) currTile.style.backgroundColor = 'red';
-            if (currTileVal === 1) currTile.style.backgroundColor = 'blue';
+            if (currTileVal === 0) {
+              currTile.style.backgroundColor = 'red';
+              currTile.addEventListener('click', e => {lockTile(e)});
+            };
+
+            if (currTileVal === 1) {
+              currTile.style.backgroundColor = 'blue';
+              currTile.addEventListener('click', e => {lockTile(e)});
+            };
+
             if (currTileVal === null) currTile.addEventListener('click', e => {
               alterTile(e);
               randomBoard.checkWin(currentGrid);
