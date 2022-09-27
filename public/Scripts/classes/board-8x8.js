@@ -17,28 +17,14 @@ export default class Board8x8 {
     assembleRows(row = []) {
         // if (this.stats.Function1 > 500000) return undefined;
         this.stats.Function1++;
-
-        const permutations = [[1, 0], [1, 1], [0, 1], [0, 0]];
-        for (let i = 0; i < 4; i++) {
-            const randomIndex = Math.floor(Math.random() * permutations.length);
-    
-            row.push(...permutations[randomIndex]);
-        };
-    
-        for (let i = 0; i < row.length; i++) {
-            const first = row[i];
-            const second = row[i + 1];
-            const third = row[i + 2];
-            
-            if (first + second + third === 0) return this.assembleRows();
-            if (first + second + third === 3) return this.assembleRows();
-        };
-    
-        let total = 0;
-        row.forEach(val => total += val);
-        if (total === 4) return row;
         
-        return this.assembleRows();
+        const permutations = [['01100110', '10110100', '11001001', '01101010', '10101010', '01011001', '10011010', '01101001', '11010100', '10010110', '01100101', '01101100', '01001011', '10101001', '10101100', '00101011', '01001101', '01010110', '00110110', '01011010', '11010010', '11001100', '00101101', '10010101', '10011001', '00110011', '10100110', '10110010', '00110101', '01010101', '11001010', '10010011', '01010011', '10100101']];
+
+        const randomIndex = Math.floor(Math.random() * permutations.length);
+    
+        row.push(...permutations[randomIndex]);
+
+        return row;
     };
     
     assembleGrid(visited = new Set(), grid = []) {

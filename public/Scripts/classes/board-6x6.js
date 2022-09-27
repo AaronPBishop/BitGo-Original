@@ -368,7 +368,6 @@ export default class Board6x6 {
         } else {
             incomplete.innerText = '';
         };
-
         return false;
     };
 
