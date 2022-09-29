@@ -30,12 +30,15 @@ setInterval(() => {
 const alterTile = e => {
     if (e.target.style.backgroundColor === "rgb(41, 38, 38)" || e.target.style.backgroundColor === "") {
       e.target.style.backgroundColor = "red";
+      e.target.style.borderBottom = '4px solid rgb(125, 0, 0)';
       currentGrid[e.target.dataset.row][e.target.dataset.col] = 0;
     } else if (e.target.style.backgroundColor === "red") {
       e.target.style.backgroundColor = "blue";
+      e.target.style.borderBottom = '4px solid rgb(0, 0, 125)';
       currentGrid[e.target.dataset.row][e.target.dataset.col] = 1;
     } else {
       e.target.style.backgroundColor = "rgb(41, 38, 38)";
+      e.target.style.borderBottom = '4px solid transparent';
       currentGrid[e.target.dataset.row][e.target.dataset.col] = null;
     };
 };
@@ -67,11 +70,13 @@ const populateBoard = async (grid) => {
 
             if (currTileVal === 0) {
               currTile.style.backgroundColor = 'red';
+              currTile.style.borderBottom = '4px solid rgb(125, 0, 0)';
               currTile.addEventListener('click', e => {lockTile(e)});
             };
 
             if (currTileVal === 1) {
               currTile.style.backgroundColor = 'blue';
+              currTile.style.borderBottom = '4px solid rgb(0, 0, 125)';
               currTile.addEventListener('click', e => {lockTile(e)});
             };
 

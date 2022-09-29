@@ -298,6 +298,7 @@ export default class Board4x4 {
             buttons.forEach(button => {
                 button.style.opacity = '0.8';
                 button.style.bottom = '90px';
+                button.style.borderBottom = 'none'
                 button.disabled = true;
             });
             

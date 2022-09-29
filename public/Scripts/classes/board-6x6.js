@@ -387,6 +387,7 @@ export default class Board6x6 {
             buttons.forEach(button => {
                 button.style.opacity = '0.8';
                 button.style.bottom = '100px';
+                button.style.borderBottom = 'none'
                 button.disabled = true;
             });
             
