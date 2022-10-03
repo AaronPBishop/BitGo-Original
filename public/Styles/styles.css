@@ -43,7 +43,7 @@ h1 {
 
     position: relative;
     top: 125px;
-    right: 20px;
+    left: 10px;
 
     background-color: red;
     border-radius: 10px;
@@ -62,7 +62,26 @@ h1 {
 
     position: relative;
     top: 125px;
-    left: 20px;
+    left: 50px;
+
+    background-color: blue;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#board-8x8 {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+
+    background-size: cover;
+    min-height: 75px;
+    min-width: 75px;
+
+    position: relative;
+    top: 235px;
+    right: 150px;
 
     background-color: blue;
     border-radius: 10px;
@@ -75,4 +94,8 @@ h1 {
 
 #board-6x6:hover {
     box-shadow: 5px 5px 5px 1px rgb(175, 10, 10);
+}
+
+#board-8x8:hover {
+    box-shadow: -5px 5px 5px 1px rgb(175, 10, 10);
 }

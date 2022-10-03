@@ -1,133 +1,115 @@
-export default class Board6x6 {
+export default class Board8x8 {
     constructor() {
         this.currentGrid = [];
-        this.stats = {
-            Function1: 0,
-            Function2: 0,
-            Function3: 0,
-            Function4: 0
-        };
 
-        this.assembledBoard = this.checkColumnsUnique();
+        this.assembledBoard = this.makeBoard(8);
     };
 
-    assembleRows(row = []) {
-        this.stats.Function1++;
+    randValue() {
+        if (Math.random() > 0.5) return 1;
 
-        const permutations = [[1, 0], [1, 1], [0, 1], [0, 0]];
-        for (let i = 0; i < 3; i++) {
-            const randomIndex = Math.floor(Math.random() * permutations.length);
-    
-            row.push(...permutations[randomIndex]);
-        };
-    
-        for (let i = 0; i < row.length; i++) {
-            const first = row[i];
-            const second = row[i + 1];
-            const third = row[i + 2];
-            
-            if (first + second + third === 0) return this.assembleRows();
-            if (first + second + third === 3) return this.assembleRows();
-        };
-    
-        let total = 0;
-        row.forEach(val => total += val);
-        if (total === 3) return row;
+        return 0;
+    };
+      
+    tryMakeBoard(size) {
+        const emptyGrid = new Array(size);
+
+        const evenCount = (size / 2);
         
-        return this.assembleRows();
+        for (let row = 0; row < size; row ++) {
+          emptyGrid[row] = [];
+
+          for (let col = 0; col < size; col ++) {
+            let newBit = this.randValue();
+            let valid = false;
+
+            for (let tries = 0; tries < 2; tries++) {
+              emptyGrid[row][col] = newBit;
+
+              valid = col < 2 || !(emptyGrid[row][col] === emptyGrid[row][col - 1] && emptyGrid[row][col] === emptyGrid[row][col - 2]);
+
+              if (!valid) { 
+                newBit = Number(!newBit); 
+
+                continue;
+              };
+
+              valid = row < 2 || !(emptyGrid[row][col] === emptyGrid[row - 1][col] && emptyGrid[row][col] === emptyGrid[row - 2][col]);
+
+              if (!valid) { 
+                newBit = Number(!newBit); 
+
+                continue;
+              };
+
+              if (col === size -1) {
+                let sum = 0;
+
+                for (let i = 0; i <= col; i++) {
+                  if (emptyGrid[row][i]) sum++;
+                };
+
+                if (sum !== evenCount) return false;
+              };
+
+              if (row === size -1) {
+                let sum = 0;
+
+                for (let i = 0; i <= row; i++) {
+                  if (emptyGrid[i][col]) sum++;
+                };
+
+                if (sum !== evenCount) return false;
+              };
+
+              break; 
+            };
+           
+            if (!valid) return false;
+          };
+        };
+      
+        const visited = new Set();
+
+        for (let i = 0; i < size; i++) {
+          visited.add(emptyGrid[i].join(''));
+        };
+
+        if (visited.size !== size) return false;
+
+        visited.clear();
+
+        for (let i = 0; i < size; i++) {
+          visited.add(emptyGrid.map(tiles => tiles[i]).join(''))
+        };
+
+        if (visited.size !== size) return false;  
+
+        return emptyGrid;
     };
-    
-    assembleGrid(visited = new Set(), grid = []) {
-        this.stats.Function2++;
-        while (grid.length < 6) {
-            const randomRow = this.assembleRows();
-            if (!visited.has(randomRow.join(''))) {
-                visited.add(randomRow.join(''))
-                grid.push(randomRow);
-            };
+      
+    makeBoard(size, count = 10000000) {
+        while (count > 0) {
+            const board = this.tryMakeBoard(size); 
+
+            if (board) this.currentGrid = board;
+
+            count--;
         };
-    
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                let currCol = `c${col}`;
-        
-                cols[currCol].push(grid[row][col]);
-            };
-        };
-    
-        const colValues = Object.values(cols);
-        for (let row = 0; row < colValues.length; row++) {
-            for (let col = 0; col < colValues[row].length; col++) {
-                const first = colValues[row][col];
-                const second = colValues[row][col + 1];
-                const third = colValues[row][col + 2];
-                    
-                if (first + second + third === 0) return this.assembleGrid();
-                if (first + second + third === 3) return this.assembleGrid();
-            };
-        };
-    
-        return grid;
-    };
-    
-    checkColumnTotals() {
-        this.stats.Function3++;
-        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0 };
-    
-        const grid = this.assembleGrid();
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                const currCol = `c${col}`
-                let currColVal = grid[row][col];
-    
-                values[currCol] += currColVal;
-            };
-        };
-    
-        let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 3) check++});
-    
-        if (check === 6) return grid;
-    
-        return this.checkColumnTotals();
-    };
-    
-    checkColumnsUnique(visited = new Set()) {
-        this.stats.Function4++;
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
-    
-        const grid = this.checkColumnTotals();
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                let currCol = `c${col}`;
-    
-                cols[currCol].push(grid[row][col]);
-            };
-        };
-    
-        const colValues = Object.values(cols);
-        for (let col = 0; col < colValues.length; col++) {
-                let currCol = Number(colValues[col].join(''));
-    
-                if (visited.has(currCol)) return this.checkColumnsUnique();
-                visited.add(currCol);
-        };
-    
-        this.currentGrid = grid;
-        return grid;
+
+        return false;
     };
     
     randomTotalGenerator() {
-        const randomTotal = [22, 23, 24, 25, 26];
+        const randomTotal = [40, 38, 36, 34];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
         return randomTotal[randomIndex];
     };
     
     randomTileFinder(grid) {
-        const randRow = Math.floor(Math.random() * 6);
-        const randCol = Math.floor(Math.random() * 6);
+        const randRow = Math.floor(Math.random() * 8);
+        const randCol = Math.floor(Math.random() * 8);
     
         const tile = [`r${randRow}`, `c${randCol}`];
     
@@ -149,8 +131,8 @@ export default class Board6x6 {
             let colVals = 0;
             currentCol.forEach(val => {if (val !== null) colVals++});
     
-            if (rowVals > 4) return false;
-            if (colVals > 4) return false;
+            if (rowVals > 6) return false;
+            if (colVals > 6) return false;
         };
 
         return true;
@@ -171,8 +153,8 @@ export default class Board6x6 {
             randomTotal--;
         };
     
-        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [] };
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7:[] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
         for (let row = 0; row < grid.length; row++) {
             let currRow = `r${row}`;
     
@@ -207,7 +189,7 @@ export default class Board6x6 {
     };
 
     endGameRowTriplets(board) {
-        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [] };
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7: [] };
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
             for (let col = 0; col < board[row].length; col++) {
@@ -231,7 +213,7 @@ export default class Board6x6 {
     };
 
     endGameColTriplets(board) {
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
                 let currCol = `c${col}`;
@@ -256,7 +238,7 @@ export default class Board6x6 {
     };
 
     endGameRowsUnique(board) {
-        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [] };
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7: [] };
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
             for (let col = 0; col < board[row].length; col++) {
@@ -277,7 +259,7 @@ export default class Board6x6 {
     };
 
     endGameColsUnique(board) {
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
                 let currCol = `c${col}`;
@@ -299,7 +281,7 @@ export default class Board6x6 {
     };
 
     endGameRowTotals(board) {
-        const values = { r0: 0, r1: 0, r2: 0, r3: 0, r4: 0, r5: 0 };
+        const values = { r0: 0, r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0, r7: 0 };
 
         for (let row = 0; row < board.length; row++) {
             const currRow = `r${row}`
@@ -311,14 +293,14 @@ export default class Board6x6 {
         };
 
         let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 3) check++});
+        Object.values(values).forEach(val => {if (Number(val) === 4) check++});
 
-        if (check === 6) return true;
+        if (check === 8) return true;
         return false;
     };
 
     endGameColTotals(board) {
-        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0 };
+        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 };
 
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
@@ -330,9 +312,9 @@ export default class Board6x6 {
         };
 
         let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 3) check++});
+        Object.values(values).forEach(val => {if (Number(val) === 4) check++});
 
-        if (check === 6) return true;
+        if (check === 8) return true;
         return false;
     };
 
@@ -368,16 +350,17 @@ export default class Board6x6 {
         } else {
             incomplete.innerText = '';
         };
+
         return false;
     };
 
     setWin(board) {
         let wins = 0;
-        if (sessionStorage.getItem('hasWon-6x6')) wins = sessionStorage.getItem('hasWon-6x6');
+        if (sessionStorage.getItem('hasWon-8x8')) wins = sessionStorage.getItem('hasWon-8x8');
 
         if (this.checkWin(board)) {
             wins++;
-            sessionStorage.setItem('hasWon-6x6', wins);
+            sessionStorage.setItem('hasWon-8x8', wins);
 
             document.getElementById('timer-current').style.opacity = '0%';
             document.getElementById('timer-best').style.opacity = '0%';
@@ -386,7 +369,6 @@ export default class Board6x6 {
             buttons.forEach(button => {
                 button.style.opacity = '0.8';
                 button.style.bottom = '100px';
-                button.style.borderBottom = 'none'
                 button.disabled = true;
             });
             
@@ -397,13 +379,13 @@ export default class Board6x6 {
 
     setBest(board, currMin, currSec, bestMin, bestSec) {
         if (this.checkWin(board)) {
-            if (sessionStorage.getItem('hasWon-6x6') > 1) {
+            if (sessionStorage.getItem('hasWon-8x8') > 1) {
                 if (Number(currMin.innerText) >= Number(bestMin.innerText) && Number(currSec.innerText) >= Number(bestSec.innerText)) return;
                 if (Number(currMin.innerText) > Number(bestMin.innerText) && Number(currSec.innerText) <= Number(bestSec.innerText)) return;
             };
 
-            sessionStorage.setItem('bestMinute-6x6', currMin.innerText);
-            sessionStorage.setItem('bestSecond-6x6', currSec.innerText);
+            sessionStorage.setItem('bestMinute-8x8', currMin.innerText);
+            sessionStorage.setItem('bestSecond-8x8', currSec.innerText);
         };
     };
 };
