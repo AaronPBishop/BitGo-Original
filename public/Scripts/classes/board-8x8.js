@@ -1,115 +1,107 @@
 export default class Board8x8 {
     constructor() {
         this.currentGrid = [];
-        this.stats = {
-            Function1: 0,
-            Function2: 0,
-            Function3: 0,
-            Function4: 0
-        };
 
-        // while (this.stats.Function1 < 500000) {
-            this.assembledBoard = this.checkColumnsUnique();
-        // }
+        this.assembledBoard = this.makeBoard(8);
+    };
+
+    randValue() {
+        if (Math.random() > 0.5) return 1;
+
+        return 0;
+    };
+      
+    tryMakeBoard(size) {
+        const emptyGrid = new Array(size);
+
+        const evenCount = (size / 2);
         
-    };
+        for (let row = 0; row < size; row ++) {
+          emptyGrid[row] = [];
 
-    assembleRows(row = []) {
-        // if (this.stats.Function1 > 500000) return undefined;
-        this.stats.Function1++;
-        
-        const permutations = [['01100110', '10110100', '11001001', '01101010', '10101010', '01011001', '10011010', '01101001', '11010100', '10010110', '01100101', '01101100', '01001011', '10101001', '10101100', '00101011', '01001101', '01010110', '00110110', '01011010', '11010010', '11001100', '00101101', '10010101', '10011001', '00110011', '10100110', '10110010', '00110101', '01010101', '11001010', '10010011', '01010011', '10100101']];
+          for (let col = 0; col < size; col ++) {
+            let newBit = this.randValue();
+            let valid = false;
 
-        const randomIndex = Math.floor(Math.random() * permutations.length);
-    
-        row.push(...permutations[randomIndex]);
+            for (let tries = 0; tries < 2; tries++) {
+              emptyGrid[row][col] = newBit;
 
-        return row;
+              valid = col < 2 || !(emptyGrid[row][col] === emptyGrid[row][col - 1] && emptyGrid[row][col] === emptyGrid[row][col - 2]);
+
+              if (!valid) { 
+                newBit = Number(!newBit); 
+
+                continue;
+              };
+
+              valid = row < 2 || !(emptyGrid[row][col] === emptyGrid[row - 1][col] && emptyGrid[row][col] === emptyGrid[row - 2][col]);
+
+              if (!valid) { 
+                newBit = Number(!newBit); 
+
+                continue;
+              };
+
+              if (col === size -1) {
+                let sum = 0;
+
+                for (let i = 0; i <= col; i++) {
+                  if (emptyGrid[row][i]) sum++;
+                };
+
+                if (sum !== evenCount) return false;
+              };
+
+              if (row === size -1) {
+                let sum = 0;
+
+                for (let i = 0; i <= row; i++) {
+                  if (emptyGrid[i][col]) sum++;
+                };
+
+                if (sum !== evenCount) return false;
+              };
+
+              break; 
+            };
+           
+            if (!valid) return false;
+          };
+        };
+      
+        const visited = new Set();
+
+        for (let i = 0; i < size; i++) {
+          visited.add(emptyGrid[i].join(''));
+        };
+
+        if (visited.size !== size) return false;
+
+        visited.clear();
+
+        for (let i = 0; i < size; i++) {
+          visited.add(emptyGrid.map(tiles => tiles[i]).join(''))
+        };
+
+        if (visited.size !== size) return false;  
+
+        return emptyGrid;
     };
-    
-    assembleGrid(visited = new Set(), grid = []) {
-        this.stats.Function2++;
-        while (grid.length < 8) {
-            const randomRow = this.assembleRows();
-            if (!visited.has(randomRow.join(''))) {
-                visited.add(randomRow.join(''))
-                grid.push(randomRow);
-            };
+      
+    makeBoard(size, count = 10000000) {
+        while (count > 0) {
+            const board = this.tryMakeBoard(size); 
+
+            if (board) this.currentGrid = board;
+
+            count--;
         };
-    
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                let currCol = `c${col}`;
-        
-                cols[currCol].push(grid[row][col]);
-            };
-        };
-    
-        const colValues = Object.values(cols);
-        for (let row = 0; row < colValues.length; row++) {
-            for (let col = 0; col < colValues[row].length; col++) {
-                const first = colValues[row][col];
-                const second = colValues[row][col + 1];
-                const third = colValues[row][col + 2];
-                    
-                if (first + second + third === 0) return this.assembleGrid();
-                if (first + second + third === 3) return this.assembleGrid();
-            };
-        };
-    
-        return grid;
-    };
-    
-    checkColumnTotals() {
-        this.stats.Function3++;
-        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 };
-    
-        const grid = this.assembleGrid();
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                const currCol = `c${col}`
-                let currColVal = grid[row][col];
-    
-                values[currCol] += currColVal;
-            };
-        };
-    
-        let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 4) check++});
-    
-        if (check === 8) return grid;
-    
-        return this.checkColumnTotals();
-    };
-    
-    checkColumnsUnique(visited = new Set()) {
-        this.stats.Function4++;
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
-    
-        const grid = this.checkColumnTotals();
-        for (let row = 0; row < grid.length; row++) {
-            for (let col = 0; col < grid[row].length; col++) {
-                let currCol = `c${col}`;
-    
-                cols[currCol].push(grid[row][col]);
-            };
-        };
-    
-        const colValues = Object.values(cols);
-        for (let col = 0; col < colValues.length; col++) {
-                let currCol = Number(colValues[col].join(''));
-    
-                if (visited.has(currCol)) return this.checkColumnsUnique();
-                visited.add(currCol);
-        };
-    
-        this.currentGrid = grid;
-        return grid;
+
+        return false;
     };
     
     randomTotalGenerator() {
-        const randomTotal = [44, 45, 46, 47, 48];
+        const randomTotal = [40, 38, 36, 34];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
         return randomTotal[randomIndex];
