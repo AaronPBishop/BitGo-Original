@@ -1,8 +1,8 @@
-export default class Board8x8 {
+export default class Board10x10 {
     constructor() {
         this.currentGrid = [];
 
-        this.assembledBoard = this.makeBoard(8);
+        this.assembledBoard = this.makeBoard(10);
     };
 
     randValue() {
@@ -101,15 +101,15 @@ export default class Board8x8 {
     };
     
     randomTotalGenerator() {
-        const randomTotal = [42, 40, 38, 36, 34];
+        const randomTotal = [50, 48, 46, 44, 42];
         const randomIndex = Math.floor(Math.random() * randomTotal.length);
     
         return randomTotal[randomIndex];
     };
     
     randomTileFinder(grid) {
-        const randRow = Math.floor(Math.random() * 8);
-        const randCol = Math.floor(Math.random() * 8);
+        const randRow = Math.floor(Math.random() * 10);
+        const randCol = Math.floor(Math.random() * 10);
     
         const tile = [`r${randRow}`, `c${randCol}`];
     
@@ -131,8 +131,8 @@ export default class Board8x8 {
             let colVals = 0;
             currentCol.forEach(val => {if (val !== null) colVals++});
     
-            if (rowVals > 6) return false;
-            if (colVals > 6) return false;
+            if (rowVals > 8) return false;
+            if (colVals > 8) return false;
         };
 
         return true;
@@ -153,8 +153,8 @@ export default class Board8x8 {
             randomTotal--;
         };
     
-        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7:[] };
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7:[], r8: [], r9: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [], c8: [], c9: [] };
         for (let row = 0; row < grid.length; row++) {
             let currRow = `r${row}`;
     
@@ -189,7 +189,7 @@ export default class Board8x8 {
     };
 
     endGameRowTriplets(board) {
-        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7: [] };
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7: [], r8: [], r9: [] };
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
             for (let col = 0; col < board[row].length; col++) {
@@ -213,7 +213,7 @@ export default class Board8x8 {
     };
 
     endGameColTriplets(board) {
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [], c8: [], c9: [] };
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
                 let currCol = `c${col}`;
@@ -238,7 +238,7 @@ export default class Board8x8 {
     };
 
     endGameRowsUnique(board) {
-        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7: [] };
+        const rows = { r0: [], r1: [], r2: [], r3: [], r4: [], r5: [], r6: [], r7: [], r8: [], r9: [] };
         for (let row = 0; row < board.length; row++) {
             let currRow = `r${row}`;
             for (let col = 0; col < board[row].length; col++) {
@@ -259,7 +259,7 @@ export default class Board8x8 {
     };
 
     endGameColsUnique(board) {
-        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
+        const cols = { c0: [], c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [], c8: [], c9: [] };
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
                 let currCol = `c${col}`;
@@ -281,7 +281,7 @@ export default class Board8x8 {
     };
 
     endGameRowTotals(board) {
-        const values = { r0: 0, r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0, r7: 0 };
+        const values = { r0: 0, r1: 0, r2: 0, r3: 0, r4: 0, r5: 0, r6: 0, r7: 0, r8: 0, r9: 0 };
 
         for (let row = 0; row < board.length; row++) {
             const currRow = `r${row}`
@@ -293,14 +293,14 @@ export default class Board8x8 {
         };
 
         let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 4) check++});
+        Object.values(values).forEach(val => {if (Number(val) === 5) check++});
 
-        if (check === 8) return true;
+        if (check === 10) return true;
         return false;
     };
 
     endGameColTotals(board) {
-        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 };
+        const values = { c0: 0, c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0, c8: 0, c9: 0 };
 
         for (let row = 0; row < board.length; row++) {
             for (let col = 0; col < board[row].length; col++) {
@@ -312,9 +312,9 @@ export default class Board8x8 {
         };
 
         let check = 0;
-        Object.values(values).forEach(val => {if (Number(val) === 4) check++});
+        Object.values(values).forEach(val => {if (Number(val) === 5) check++});
 
-        if (check === 8) return true;
+        if (check === 10) return true;
         return false;
     };
 
@@ -356,11 +356,11 @@ export default class Board8x8 {
 
     setWin(board) {
         let wins = 0;
-        if (sessionStorage.getItem('hasWon-8x8')) wins = sessionStorage.getItem('hasWon-8x8');
+        if (sessionStorage.getItem('hasWon-10x10')) wins = sessionStorage.getItem('hasWon-10x10');
 
         if (this.checkWin(board)) {
             wins++;
-            sessionStorage.setItem('hasWon-8x8', wins);
+            sessionStorage.setItem('hasWon-10x10', wins);
 
             document.getElementById('timer-current').style.opacity = '0%';
             document.getElementById('timer-best').style.opacity = '0%';
@@ -368,7 +368,7 @@ export default class Board8x8 {
             const buttons = document.querySelectorAll('.buttons');
             buttons.forEach(button => {
                 button.style.opacity = '0.8';
-                button.style.bottom = '100px';
+                button.style.bottom = '110px';
                 button.style.borderBottom = 'none'
                 button.disabled = true;
             });
@@ -380,13 +380,13 @@ export default class Board8x8 {
 
     setBest(board, currMin, currSec, bestMin, bestSec) {
         if (this.checkWin(board)) {
-            if (sessionStorage.getItem('hasWon-8x8') > 1) {
+            if (sessionStorage.getItem('hasWon-10x10') > 1) {
                 if (Number(currMin.innerText) >= Number(bestMin.innerText) && Number(currSec.innerText) >= Number(bestSec.innerText)) return;
                 if (Number(currMin.innerText) > Number(bestMin.innerText) && Number(currSec.innerText) <= Number(bestSec.innerText)) return;
             };
 
-            sessionStorage.setItem('bestMinute-8x8', currMin.innerText);
-            sessionStorage.setItem('bestSecond-8x8', currSec.innerText);
+            sessionStorage.setItem('bestMinute-10x10', currMin.innerText);
+            sessionStorage.setItem('bestSecond-10x10', currSec.innerText);
         };
     };
 };

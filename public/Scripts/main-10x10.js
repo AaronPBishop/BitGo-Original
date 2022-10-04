@@ -1,6 +1,6 @@
-import Board8x8 from "./classes/board-8x8.js";
+import Board10x10 from "./classes/board-10x10.js";
 
-const randomBoard = new Board8x8();
+const randomBoard = new Board10x10();
 const presetBoard = randomBoard.reduceTiles();
 const currentGrid = randomBoard.currentGrid;
 
@@ -10,10 +10,10 @@ console.log(randomBoard.stats);
 const bestMin = document.getElementById('best-minute');
 const bestSec = document.getElementById('best-second');
 
-if (sessionStorage.getItem('hasWon-8x8')) {
+if (sessionStorage.getItem('hasWon-10x10')) {
   document.getElementById('timer-best').style.opacity = '100%';
-  bestMin.innerText = sessionStorage.getItem('bestMinute-8x8');
-  bestSec.innerText = sessionStorage.getItem('bestSecond-8x8');
+  bestMin.innerText = sessionStorage.getItem('bestMinute-10x10');
+  bestSec.innerText = sessionStorage.getItem('bestSecond-10x10');
 };
 
 const currMin = document.getElementById("current-minute");
@@ -48,7 +48,7 @@ const lockTile = e => {
     e.target.style.backgroundImage = 'url(./styles/images/lock.png)';
     e.target.style.backgroundPosition = 'center';
     e.target.style.backgroundRepeat = 'no-repeat';
-    e.target.style.backgroundSize = '40px';
+    e.target.style.backgroundSize = '30px';
   } else {
     e.target.style.backgroundImage = '';
   };

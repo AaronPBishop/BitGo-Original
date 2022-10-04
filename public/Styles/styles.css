@@ -43,7 +43,7 @@ h1 {
 
     position: relative;
     top: 125px;
-    left: 10px;
+    left: 50px;
 
     background-color: red;
     border-radius: 10px;
@@ -62,7 +62,7 @@ h1 {
 
     position: relative;
     top: 125px;
-    left: 50px;
+    left: 110px;
 
     background-color: blue;
     border-radius: 10px;
@@ -81,9 +81,28 @@ h1 {
 
     position: relative;
     top: 235px;
-    right: 150px;
+    right: 110px;
 
     background-color: blue;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+#board-10x10 {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+
+    background-size: cover;
+    min-height: 75px;
+    min-width: 75px;
+
+    position: relative;
+    top: 235px;
+    right: 50px;
+
+    background-color: red;
     border-radius: 10px;
     border: 2px solid white;
 }
