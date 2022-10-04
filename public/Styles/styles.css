@@ -118,3 +118,7 @@ h1 {
 #board-8x8:hover {
     box-shadow: -5px 5px 5px 1px rgb(175, 10, 10);
 }
+
+#board-10x10:hover {
+    box-shadow: 5px 5px 5px 1px rgb(10, 10, 170);
+}
