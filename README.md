@@ -21,3 +21,14 @@ All but defeated, I realized that the only valid solution left was to entirely r
 The first function in this chain assembles valid rows (arrays), containing an even amount of red values and blue values. The second function takes the row handed off by the first function, and checks to see if it is unique, at which point it gets pushed into the outer grid. The third function then takes the grid (2d array) handed off by the second function, checks to see if all of the columns have an even amount of red and blue values, and then hands the grid off to the final function. At this point, each column is checked for uniqueness, and if it passes, the grid is finally handed off to the reduction functions. If any piece of the grid is deemed defective at any point during the recursive process, the chain will call itself over, all the way back to the top. **If you're interested in seeing how many times each recursive step takes place when a board instance is generated, open up your browser's DevTools and check out the console tab. Some boards are generated in less than a hundred steps, and some take thousands of steps! Nonetheless, this entire recursive process happens faster than you can _blink_.**
 
 All that was left to do after perfecting the generator process was to refactor a few tracking functions, which reduce the tiles from the now solved board. The solution performed marvelously, thus cutting the Gordian knot and paving the way for bigger and better BitGo boards.
+
+
+## _Preview Images_
+
+### _Randomly generated 6x6 board_
+
+![image](https://user-images.githubusercontent.com/95946808/202943338-f6278e85-40a6-40eb-8423-9fc0413400bf.png)
+
+### _Solved 6x6 board_
+
+![image](https://user-images.githubusercontent.com/95946808/202943404-e4570f3f-03ce-4bdd-98c9-203bb56ce8b8.png)
